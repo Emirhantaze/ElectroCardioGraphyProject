@@ -20,7 +20,7 @@
 helpsearch*/
 
 # Simulink code generation folders
-slprj/
+detection/
 sccprj/
 
 # Matlab code generation folders
