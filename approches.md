@@ -8,7 +8,7 @@
         after that point we aim to design cheby and butterworth filters u can found their funtions in 
         filters folder;
     4: 
-        next step is going a bit further and make filters uniqe for each fonction
+        next step is going a bit further and make filters uniqe for each signal
         a:
             first we know that there are lower and higher unwanted frequncies in our functions 
             the deal is how to find which are them are necessary ones:
@@ -23,11 +23,9 @@
         
         a:
             the second methodology is a bit strange and their codes are not written right now
-            in this method we mainly focus on a perfect ecg signal and correlations with this perfect
-            signal;
+            in this method we mainly focus on a perfect ecg signal and correlations with this perfect signal;
         b: 
-            to reach that what we think was while we don't have data of perfect signal we will take an
-            image of perfect signal and using c# we take data of signal from image;
+            to reach that what we think was while we don't have data of perfect signal we will take an image of perfect signal and using c# we take data of signal from image;
         c: 
             after getting data we try to match the perfect signal and normal signal with scaling to
             perfect signal;
