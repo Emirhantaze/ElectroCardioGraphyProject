@@ -6,7 +6,6 @@
 # Mono-specific ignores
 .mono/
 
-.detection\
-.detection/
-detection[/\]
-[\/]detection[\/]
+.\detection\*
+
+./detection/*
