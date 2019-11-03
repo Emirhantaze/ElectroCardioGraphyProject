@@ -6,13 +6,21 @@ e = filter(b,a,f);
 e = filter(b,a,e);
 f=e;
 temp=[];
-temp1=[];
+
+ii=0;
 for i = 1:length(f)-800
     temp=[temp mean(diff(f(i:i+800)))];
-    temp1=[temp1 (diff(f(i:i+800)))];
+    if abs(temp(i))==min(abs(temp))
+        ii=i;
+    end
 end
-i=min(abs(temp));
-f=temp1(i);
+
+
+f=f(ii:ii+800);
+t=t(ii:ii+800);
+firstsig=f;
+figure(3);
+plot(t,f);
 f=f-min(f);
 % f=f/max(f);
 % for i = 1:length(f)
