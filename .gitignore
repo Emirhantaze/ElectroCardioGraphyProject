@@ -1,11 +1,35 @@
 
-# Godot-specific ignores
-.import/
+# Created by https://www.gitignore.io/api/matlab
+# Edit at https://www.gitignore.io/?templates=matlab
 
+### MATLAB ###
+# Windows default autosave extension
+*.asv
 
-# Mono-specific ignores
-.mono/
+# OSX / *nix default autosave extension
+*.m~
 
-.\detection\*
+# Compiled MEX binaries (all platforms)
+*.mex*
 
-./detection/*
+# Packaged app and toolbox files
+*.mlappinstall
+*.mltbx
+
+# Generated helpsearch folders
+helpsearch*/
+
+# Simulink code generation folders
+slprj/
+sccprj/
+
+# Matlab code generation folders
+codegen/
+
+# Simulink autosave extension
+*.autosave
+
+# Octave session info
+octave-workspace
+
+# End of https://www.gitignore.io/api/matlab
