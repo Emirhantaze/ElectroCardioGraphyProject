@@ -6,4 +6,4 @@
 # Mono-specific ignores
 .mono/
 
-.detection/
+.detection\
