@@ -1,1 +1,9 @@
-detection/
+
+# Godot-specific ignores
+.import/
+
+
+# Mono-specific ignores
+.mono/
+
+.detection/
