@@ -1,5 +1,5 @@
-function [] = peekfind(f)
-    f=f-min(f);
+function [epeaks] = peekfind(f)
+        
         [~,lmin] = islocalmin(f);
         [~,lmax] = islocalmax(f);
         temp = lmin;
@@ -12,7 +12,7 @@ function [] = peekfind(f)
         end
 
         end
-        lmmin=mean(lmin)/4;
+        lmmin=mean(lmin)/3;
         lmin=temp;
         for i = 1:length(lmin)
         if(lmin(i)<lmmin)
@@ -29,7 +29,7 @@ function [] = peekfind(f)
         end
 
         end
-        lmmax=mean(lmax)/4;
+        lmmax=mean(lmax)/3;
         lmax=temp;
         for i = 1:length(lmax)
         if(lmax(i)<lmmax)
@@ -37,7 +37,7 @@ function [] = peekfind(f)
         end
         end
 
-        ltotal=lmin(2:length(f))+lmax(2:length(f));
+        ltotal=lmin(1:length(f))+lmax(1:length(f));
         epeaks=[];
         for i = 1:length(ltotal)
         if(ltotal(i)==0)
@@ -47,9 +47,11 @@ function [] = peekfind(f)
         end
         figure(1)
         subplot(3,1,1)
-        plot(1:length(f),f,epeaks)
+        plot(1:length(f),f)
         subplot(3,1,2)
         plot(epeaks,f(epeaks))
         subplot(3,1,3)
         plot(abs(fft(f(epeaks))))
+        subplot(3,1,1)
+        hold on
 end
