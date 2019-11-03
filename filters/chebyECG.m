@@ -45,7 +45,7 @@ Filter type, specified as one of the following:
 [b,a] = cheby1(1,3,[0.2 0.6],'stop');
 e = filter(b,a,f);
 
-[b,a] = cheby1(1,3,[0.2 0.6],'stop');
+[b,a] = cheby1(1,3,[0.2 0.6],'stop'); 
 
 e = filter(b,a,e);
 

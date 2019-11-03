@@ -16,7 +16,7 @@ Filter type, specified as one of the following:
 
 'stop' specifies a bandstop filter of order 2n if Wn is a two-element vector.
 %}
-[b,a]=butter(2, .01, 'high');
+[b,a]=butter(2, .01, 'high');   % calculating values to make fhigh pass filter
 
 e = filter(b,a,f);
 
