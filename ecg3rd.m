@@ -5,6 +5,7 @@ fopen(s);
 pause(.01);
 out=fscanf(s);
 
+
 i=0;
 f20=0;
 t20=0;
