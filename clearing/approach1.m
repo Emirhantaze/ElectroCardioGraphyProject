@@ -1,11 +1,7 @@
-function [] = approach1(t,f)
-        cla
-        
+function [] = approach1(t,f,selectedmod,useperfect)
+ 
         [t,f]=findPerf(t,f);
-        f=f-min(f);
-        
-%         [f]=chebyECG(f);
-%         f=f-min(f);
+        f=f-min(f);       
         f=(f./max(f))*100;
         sol = qrs(f,peekfind(f));
         plot(sol(1:length(sol)),f(sol(1:length(sol))),"*r")
