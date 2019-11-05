@@ -1,6 +1,9 @@
-function [] = approach1(t,f,selectedmod,useperfect)
- 
-        [t,f]=findPerf(t,f);
+function [] = approach1(t,f,useperfect,selectedmod,lowfreq,highfreq)
+        
+        [t,f]=findPerf(t,f,useperfect);
+        switch selectedmod
+            case
+        end    
         f=f-min(f);       
         f=(f./max(f))*100;
         sol = qrs(f,peekfind(f));
