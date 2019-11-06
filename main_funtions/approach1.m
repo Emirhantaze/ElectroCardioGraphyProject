@@ -10,11 +10,11 @@ function [] = approach1(t,f,useperfect,selectedmod,lowfreq,highfreq)
         highfreq=highfreq/Lecg;
         switch selectedmod
             case {'butter','Butter'}
-                butterworthFilter(f,lowfreq,highfreq);
+                f=butterworthFilter(f,lowfreq,highfreq);
             case {'cheby','Cheby'}
-                chebyECG(f,lowfreq,highfreq);
+                f=chebyECG(f,lowfreq,highfreq);
             case {'elliptic','Elliptic'}
-                elliptic1November(f,lowfreq,highfreq);
+                f=elliptic1November(f,lowfreq,highfreq);
         end    
         f=f-min(f);       
         f=(f./max(f))*100;

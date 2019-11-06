@@ -1,4 +1,4 @@
-function[e]=chebyECG(f)
+function[e]=chebyECG(f,lowfreq,highfreq)
 
 %{
 [b,a] = cheby1(n,Rp,Wp,ftype)
@@ -42,10 +42,10 @@ Filter type, specified as one of the following:
 
 'stop' specifies a bandstop filter of order 2n if Wp is a two-element vector.
 %}
-[b,a] = cheby1(1,3,[0.2 0.6],'stop');
+[b,a] = cheby1(1,3,[lowfreq,highfreq],'stop');
 e = filter(b,a,f);
 
-[b,a] = cheby1(1,3,[0.2 0.6],'stop'); 
+[b,a] = cheby1(1,3,[lowfreq,highfreq],'stop'); 
 
 e = filter(b,a,e);
 

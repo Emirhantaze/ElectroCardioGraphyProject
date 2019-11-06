@@ -1,9 +1,9 @@
-function [e] = elliptic1November(f)
-[b,a] = ellip(3,5,50,[0.2 0.6],'stop');
+function [e] = elliptic1November(f,lowfreq,highfreq)
+[b,a] = ellip(3,5,50,[lowfreq,highfreq],'stop');
 
 e = filter(b,a,f);
 
-[b,a] = ellip(3,5,50,[0.2 0.6],'stop');
+[b,a] = ellip(3,5,50,[lowfreq,highfreq],'stop');
 
 e = filter(b,a,e);
 
