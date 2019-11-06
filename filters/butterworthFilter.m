@@ -1,4 +1,4 @@
-function[e]=butterworthFilter(f)
+function[e]=butterworthFilter(f,lowfreq,highfreq)
 %[b,a] = butter(n,Wn,ftype)
 % n = Filter Order, integer scalar
 % Wn = Cut-off Frequency, scalar | two-element vector
@@ -16,11 +16,11 @@ Filter type, specified as one of the following:
 
 'stop' specifies a bandstop filter of order 2n if Wn is a two-element vector.
 %}
-[b,a]=butter(2, .01, 'high');   % calculating values to make fhigh pass filter
+[b,a]=butter(2, highfreq, 'high');   % calculating values to make fhigh pass filter
 
 e = filter(b,a,f);
 
-[b,a]=butter(2,0.1,'low');
+[b,a]=butter(2,lowfreq,'low');
 
 e=filter(b,a,e);
 
