@@ -20,8 +20,8 @@ Filter type, specified as one of the following:
 
 e = filter(b,a,f);
 
-[b,a]=butter(2,lowfreq,'low');
+[b,a]=butter(1,lowfreq,'low');
 
 e=filter(b,a,e);
 
-plot(e)
+% plot(e)

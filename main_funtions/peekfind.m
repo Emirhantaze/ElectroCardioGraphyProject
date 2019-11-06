@@ -45,13 +45,6 @@ function [epeaks] = peekfind(f)
             epeaks=[epeaks i];
         end
         end
-        figure(1)
-        subplot(3,1,1)
-        plot(1:length(f),f)
-        subplot(3,1,2)
-        plot(epeaks,f(epeaks))
-        subplot(3,1,3)
-        plot(abs(fft(f(epeaks))))
-        subplot(3,1,1)
-        hold on
+        
+      
 end

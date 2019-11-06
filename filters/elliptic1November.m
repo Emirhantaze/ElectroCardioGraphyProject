@@ -7,7 +7,7 @@ e = filter(b,a,f);
 
 e = filter(b,a,e);
 
-plot(e)
+% plot(e)
 
 %{
 [b,a] = ellip(n,Rp,Rs,Wp,ftype)
