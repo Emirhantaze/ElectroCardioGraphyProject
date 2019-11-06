@@ -1,6 +1,6 @@
 function [t,f] = findPerf(t,f,flag)
-[t,f]=delete_first(t,f);
-f=f-movmean(f,	75);
+[t,f]=delete_first(t,f); %burada ilk ba?ta hatal? gelen k?sm? düzeltiyoruz
+f=f-movmean(f,	75);        %dc value ve low freqanslara filtre at?yoruz
 
 temp=[];
 ii=0;
@@ -11,6 +11,8 @@ for i = 1:length(f)-1000
         ii=i;
     end
 end
+% for içinde toplam bulunan türev de?erlerinin ortalamas?n? al?p en dü?ük
+% ortlalmal? yeri buluyor tabi istenirse istenmezse hiç çal??m?yor
 f=f(ii:ii+1000);
 t=t(ii:ii+1000);
 end

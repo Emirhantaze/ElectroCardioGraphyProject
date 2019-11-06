@@ -1,4 +1,4 @@
-function [] = approach1(t,f,useperfect,selectedmod,lowfreq,highfreq)
+function [] = approach1(t,f,useperfect,selectedmod,lowfreq,highfreq,x)
  %%       
         [t,f]=findPerf(t,f,useperfect);
         [Fv ,Fecg]=myfft(t,f);
@@ -28,7 +28,7 @@ function [] = approach1(t,f,useperfect,selectedmod,lowfreq,highfreq)
         end    
         f=f-min(f);       
         f=(f./max(f))*100;
-        sol = qrs(f,peekfind(f));
+        sol = qrs(f,peekfind(f),x);
         subplot(3,2,3)
         
         plot(t,f);
@@ -68,7 +68,8 @@ function [] = approach1(t,f,useperfect,selectedmod,lowfreq,highfreq)
             bpm(i)=60/(t(sol(p(i)))-t(sol(p(i-1))));
         end
        bpm(1)=mean(bpm(2:length(bpm)));
-       
+       length(bpm)
+       length(p)
        plot(t(sol(p)),bpm)
        ylim([60 120])
        a=mean(bpm);

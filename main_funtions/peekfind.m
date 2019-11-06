@@ -1,8 +1,11 @@
 function [epeaks] = peekfind(f)
-        
+        %% bu k?s?mda coefficiantlar?yla beraber peak varm? yok mu onu hesapl?yoruz 
         [~,lmin] = islocalmin(f);
         [~,lmax] = islocalmax(f);
         temp = lmin;
+        %%burada peak olmuyan yerlerde lmin 0 oldu?u için onlar? yok
+        %ediyoruz
+        
         i = 1;
         while i<=length(lmin)
         if(lmin(i)==0)
@@ -12,13 +15,15 @@ function [epeaks] = peekfind(f)
         end
 
         end
-        lmmin=mean(lmin)/3;
+        lmmin=mean(lmin)/3;    
+        %burada ortalamas?n? al?p alt?nda kalanlar? yaalnc? peak yap?yoruz 
         lmin=temp;
         for i = 1:length(lmin)
         if(lmin(i)<lmmin)
             lmin(i)=0;
         end
         end
+        %yine ayn? procces
         temp=lmax;
         i = 1;
         while i<=length(lmax)
@@ -36,7 +41,7 @@ function [epeaks] = peekfind(f)
             lmax(i)=0;
         end
         end
-
+        
         ltotal=lmin(1:length(f))+lmax(1:length(f));
         epeaks=[];
         for i = 1:length(ltotal)

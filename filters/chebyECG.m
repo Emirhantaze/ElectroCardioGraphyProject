@@ -42,10 +42,10 @@ Filter type, specified as one of the following:
 
 'stop' specifies a bandstop filter of order 2n if Wp is a two-element vector.
 %}
-[b,a] = cheby1(1,3,[lowfreq,highfreq],'stop');
+[b,a] = cheby1(1,3,[lowfreq,highfreq],'bandpass');
 e = filter(b,a,f);
 
-[b,a] = cheby1(1,3,[lowfreq,highfreq],'stop'); 
+[b,a] = cheby1(1,3,[lowfreq,highfreq],'bandpass'); 
 
 e = filter(b,a,e);
 
