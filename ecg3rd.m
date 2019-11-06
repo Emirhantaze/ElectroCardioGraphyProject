@@ -5,10 +5,11 @@ fopen(s);
 pause(.01);
 out=fscanf(s);
 
+
 i=0;
 f20=0;
 t20=0;
-pause(3);
+pause(3);  %this is test
 tic
 while toc<10
 i=i+1;
