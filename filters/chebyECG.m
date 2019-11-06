@@ -45,8 +45,6 @@ Filter type, specified as one of the following:
 [b,a] = cheby1(1,3,[lowfreq,highfreq],'bandpass');
 e = filter(b,a,f);
 
-[b,a] = cheby1(1,3,[lowfreq,highfreq],'bandpass'); 
 
-e = filter(b,a,e);
 
 % plot(e)

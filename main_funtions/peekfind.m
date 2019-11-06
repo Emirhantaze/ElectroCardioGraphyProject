@@ -41,12 +41,13 @@ function [epeaks] = peekfind(f)
             lmax(i)=0;
         end
         end
-        
+        %sonra peakleri ve droplar? birle?tiriyoruz
         ltotal=lmin(1:length(f))+lmax(1:length(f));
         epeaks=[];
         for i = 1:length(ltotal)
         if(ltotal(i)==0)
         else
+            %burada hangi noktalardo olduklar?n? buluyor bu peaklerin
             epeaks=[epeaks i];
         end
         end

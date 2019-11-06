@@ -1,11 +1,9 @@
 function [e] = elliptic1November(f,lowfreq,highfreq)
-[b,a] = ellip(3,5,50,[lowfreq,highfreq],'stop');
+[b,a] = ellip(3,5,50,[lowfreq,highfreq],'bandpass');
 
 e = filter(b,a,f);
 
-[b,a] = ellip(3,5,50,[lowfreq,highfreq],'stop');
 
-e = filter(b,a,e);
 
 % plot(e)
 
