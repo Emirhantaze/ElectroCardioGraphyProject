@@ -9,14 +9,20 @@ and proccesing it to calculate heart rate and other informations
     apprach1(t,f,useperfect,selectedmod,lowfreq,highfreq,x)
     t=time vector;
     f=signal vector;
-    useperfect= this is a logical value here this defines do you want to take best 1000 value or whole signal
-    selectedmod=this takes 3 different values (butter , cheby , elliptic ) for the inputs other than that equals to not filtering signal
-    lowfreq=this determines the low cutoff frequency
-    highfreq=this determines the high cutoff frequency
-    x=takes vales between -100 100 but suggested inputs
-        for elliptic is 19
-        for butter is 50
-        for cheby is 30
+    useperfect= 
+        this is a logical value here this defines do you want to take best 1000 value or whole signal
+    selectedmod=
+        this takes 3 different values (butter , cheby , elliptic ) for the 
+        inputs other than that equals to not filtering signal
+    lowfreq=
+        this determines the low cutoff frequency
+    highfreq=
+        this determines the high cutoff frequency
+    x=
+        takes vales between -100 100 but suggested inputs
+            for elliptic value is 19
+            for butter value is 50
+            for cheby value is 30
 
 Warning!!! This applications can not be usable in medical.
 
