@@ -1,9 +1,9 @@
+
 function [] = approach1(t,f,useperfect,selectedmod,lowfreq,highfreq,x)
  %%     how code works is explained in each function
  %      but if you have problems you can contact me via github
- %      or emtiyltezkry@gmail.com
- %      or emirhan.taze@agu.edu.tr
- %      feel free to ask anything about code
+ %      please dont hesitate to open issues
+ %      and feel free to ask anything about code
  %%     getting perf values of signal and plotting itself and fft
  %      used funtions are findperf,myfft
         [t,f]=findPerf(t,f,useperfect);
@@ -34,6 +34,7 @@ function [] = approach1(t,f,useperfect,selectedmod,lowfreq,highfreq,x)
         f=f-min(f);       
         f=(f./max(f))*100;
 %%      peak finding plotting filtered signnal with peaks and fft of it
+%       used funtions are qrs,peekfind
         sol = qrs(f,peekfind(f),x);
         subplot(3,2,3)
         
