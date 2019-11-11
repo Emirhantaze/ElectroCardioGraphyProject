@@ -1,8 +1,8 @@
 import numpy as np
 import statistics
 def myfft(tin,fin):
-    ECG=fin
-    t=tin
+    ECG=fin[np.arange(250,len(fin))]
+    t=tin[np.arange(250,len(tin))]
     L=len(t)
     Ts = statistics.mean(np.diff(t))
     Fs = 1/Ts                                     
