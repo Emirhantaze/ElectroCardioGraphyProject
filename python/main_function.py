@@ -12,7 +12,10 @@ def main():
     f=-f
     tf=e.myfft(t,f)
     plt.plot(tf[0],tf[1])
+    plt.xlim(0,100)
+    plt.xticks(np.arange(10,101,10))
     plt.show()
+
 
 
 if __name__ == "__main__":
