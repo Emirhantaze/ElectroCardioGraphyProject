@@ -1,1 +1,2 @@
-import 
+import meep as mp;
+
