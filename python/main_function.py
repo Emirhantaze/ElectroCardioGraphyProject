@@ -10,15 +10,17 @@ def main():
     
     t=mat['t9'][0]
     f=-mat['f9'][0]
-    print(len(f))
+    
     tf=e.myfft(t,f)
     fig = plt.figure(figsize=(8, 6))
+    plt.show(block=False)
     ax = fig.add_subplot(111)
     ax.plot(tf[0],tf[1])
     ax.set_xlim(0,100)
     ax.grid(True)
+    plt.xticks(np.arange(0,101,5))
     cursor = Cursor(ax, useblit=True, color='r', linewidth=0.4)
-    plt.show()
+    plt.show(block=False)
 
 
 
