@@ -34,5 +34,4 @@ Warning!!! This applications can not be usable in medical.
     Group Name:
     Agu_eeepower
 
-    University:
     Abdullah Gul University

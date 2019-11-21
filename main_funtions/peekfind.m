@@ -1,9 +1,9 @@
 function [epeaks] = peekfind(f)
-        %% bu k?s?mda coefficiantlar?yla beraber peak varm? yok mu onu hesapl?yoruz 
+%% we calculate coefficients if they have peaks
         [~,lmin] = islocalmin(f);
         [~,lmax] = islocalmax(f);
         temp = lmin;
-        %%burada peak olmuyan yerlerde lmin 0 oldu?u için onlar? yok
+        %%burada peak olmuyan yerlerde lmin 0 oldu?u iï¿½in onlar? yok
         %ediyoruz
         
         i = 1;

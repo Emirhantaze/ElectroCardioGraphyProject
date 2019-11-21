@@ -20,7 +20,7 @@ def main():
     ax.grid(True)
     plt.xticks(np.arange(0,101,5))
     cursor = Cursor(ax, useblit=True, color='r', linewidth=0.4)
-    plt.show(block=False)
+    plt.show(block=True)
 
 
 

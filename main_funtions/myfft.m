@@ -10,6 +10,6 @@ Fn = Fs/2;                                          % Nyquist Frequency
 FECG = fft(ECG);                                  % Fourier Transform (Normalised)
 Fv = linspace(0, 1, fix(L/2)+1)*Fn;                 % Frequency Vector
 Iv = 1:length(Fv);                                  % Index Vector
-FECG= abs(FECG(Iv))/L;                              % de?er normal fft'nin absulat value'sunu al?yor
+FECG= abs(FECG(Iv))/L;                              % deger normal fft'nin absulat value'sunu aliyor
 end
 
