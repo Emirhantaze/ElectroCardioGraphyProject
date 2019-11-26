@@ -9,6 +9,7 @@
 # OSX / *nix default autosave extension
 *.m~
 .DS_Store
+python/pandas-0.25.3-cp37-cp37m-macosx_10_9_x86_64.whl
 
 # Compiled MEX binaries (all platforms)
 *.mex*
