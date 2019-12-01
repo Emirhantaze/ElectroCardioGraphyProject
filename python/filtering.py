@@ -63,7 +63,7 @@ if(filtertype=="none"):
     f=y
 elif(filtertype=="butter"):
     f=e.butter_bandpass_filter(y,lowf,highf,Fs)
-    print("succes")
+    print("succeeded!")
 elif(filtertype=="cheby"):
     f=e.cheby_bandpass_filter(y,lowf,highf,Fs,order=order)
 elif(filtertype=="ellip"):
