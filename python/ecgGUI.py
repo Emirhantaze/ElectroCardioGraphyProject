@@ -179,4 +179,3 @@ ani = animation.FuncAnimation(f, animate, interval=1000)
 app.mainloop()
 """
 
-import pandas as pd
