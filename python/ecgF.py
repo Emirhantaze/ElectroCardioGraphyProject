@@ -1,6 +1,45 @@
 from __future__ import division
 import numpy as np
 import talib as ta  
+from scipy.signal import butter, lfilter,cheby2,ellip
+# this page used for butterworth filter design 
+# https://scipy-cookbook.readthedocs.io/items/ButterworthBandpass.html
+def cheby_bandpass(lowcut, highcut, fs, order=5):
+    nyq = 0.5 * fs
+    low = lowcut / nyq
+    high = highcut / nyq
+    b, a = cheby2(order, 1,[low, high], btype='band')
+    return b, a
+
+
+def cheby_bandpass_filter(data, lowcut, highcut, fs, order=5):
+    b, a = ellip_bandpass(lowcut, highcut, fs, order=order)
+    y = lfilter(b, a, data)
+    return y
+def ellip_bandpass(lowcut, highcut, fs, order=5):
+    nyq = 0.5 * fs
+    low = lowcut / nyq
+    high = highcut / nyq
+    b, a = ellip(order,1, 1,[low, high], btype='band')
+    return b, a
+
+
+def ellip_bandpass_filter(data, lowcut, highcut, fs, order=5):
+    b, a = ellip_bandpass(lowcut, highcut, fs, order=order)
+    y = lfilter(b, a, data)
+    return y
+def butter_bandpass(lowcut, highcut, fs, order=5):
+    nyq = 0.5 * fs
+    low = lowcut / nyq
+    high = highcut / nyq
+    b, a = butter(order, [low, high], btype='band')
+    return b, a
+
+
+def butter_bandpass_filter(data, lowcut, highcut, fs, order=5):
+    b, a = butter_bandpass(lowcut, highcut, fs, order=order)
+    y = lfilter(b, a, data)
+    return y    
 def myfft(tin,fin):
     ECG=fin[np.arange(250,len(fin))]
     t=tin[np.arange(250,len(tin))]
