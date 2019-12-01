@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import ecgF  as e
 from decimal import getcontext
-from scipy.signal import butter, lfilter,cheby2,ellip
+from scipy.signal import butter, lfilter,cheby2,ellip,find_peaks
 getcontext().prec = 4
 with open("filter.csv","w") as csv_file:
     csv_writer = csv.DictWriter(csv_file, fieldnames=["type","lowf","highf","order"])
@@ -40,14 +40,14 @@ y =  (data['f'].values)
 x =  (data['t'].values)
 y = np.array(y, dtype=float)
 y=-y
-plt.plot(x,y)
+#plt.plot(x,y)
 #now we got raw whole signal now we get only last thousand values with checking size
 temp = len(y)
 if temp>1000:
     y=y[temp-1001:temp-1]
     x=x[temp-1001:temp-1]
 #now moving avarage will be applied to signal
-a=time.time()
+c=time.time()
 y=y-ta.MA(y,200)
 #after moving avareage we gaot selected filter and cutoffs so that we can start
 temp=pd.read_csv("filter.csv")
@@ -69,7 +69,11 @@ elif(filtertype=="cheby"):
 elif(filtertype=="ellip"):
     f=e.ellip_bandpass_filter(y,lowf,highf,Fs,order=order)
 
-print(time.time()-a)
-plt.plot(x,f,"r")
 
+peaks, _ = find_peaks(y, distance=150)
+plt.plot(x,y)
+plt.plot(x[peaks], y[peaks], "x")
+bpm=60/(np.mean(np.diff(x[peaks])))
+print(time.time()-c)
+print(bpm)
 plt.show()

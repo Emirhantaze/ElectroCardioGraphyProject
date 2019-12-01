@@ -12,7 +12,7 @@ plt.show()
 
 peaks, _ = find_peaks(x, distance=150)
 # difference between peaks is >= 150
-print(np.diff(peaks))
+print(x)
 # prints [186 180 177 171 177 169 167 164 158 162 172]
 
 plt.plot(x)
