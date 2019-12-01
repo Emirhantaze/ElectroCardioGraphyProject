@@ -1,3 +1,4 @@
+"""
 import tkinter as tk
 from pandas import DataFrame
 import matplotlib.pyplot as plt
@@ -57,5 +58,88 @@ scatter3.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
 ax3.legend() 
 ax3.set_xlabel('Interest Rate')
 ax3.set_title('Interest Rate Vs. Stock Index Price')
+
+root.mainloop()
+
+# ERROR in NavigationToolbar2TkAgg
+import matplotlib
+matplotlib.use('TkAgg')
+
+from numpy import arange, sin, pi
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
+# implement the default mpl key bindings
+from matplotlib.backend_bases import key_press_handler
+
+
+from matplotlib.figure import Figure
+
+import sys
+if sys.version_info[0] < 3:
+    import Tkinter as Tk
+else:
+    import tkinter as Tk
+
+root = Tk.Tk()
+root.wm_title("Embedding in TK")
+
+
+f = Figure(figsize=(5, 4), dpi=100)
+a = f.add_subplot(111)
+t = arange(0.0, 3.0, 0.01)
+s = sin(2*pi*t)
+
+a.plot(t, s)
+
+
+# a tk.DrawingArea
+canvas = FigureCanvasTkAgg(f, master=root)
+canvas.show()
+canvas.get_tk_widget().pack(side=Tk.TOP, fill=Tk.BOTH, expand=1)
+
+toolbar = NavigationToolbar2TkAgg(canvas, root)
+toolbar.update()
+canvas._tkcanvas.pack(side=Tk.TOP, fill=Tk.BOTH, expand=1)
+
+
+def on_key_event(event):
+    print('you pressed %s' % event.key)
+    key_press_handler(event, canvas, toolbar)
+
+canvas.mpl_connect('key_press_event', on_key_event)
+
+
+def _quit():
+    root.quit()     # stops mainloop
+    root.destroy()  # this is necessary on Windows to prevent
+                    # Fatal Python Error: PyEval_RestoreThread: NULL tstate
+
+button = Tk.Button(master=root, text='Quit', command=_quit)
+button.pack(side=Tk.BOTTOM)
+
+Tk.mainloop()
+# If you put root.destroy() here, it will cause an error if
+# the window is closed with the window manager.
+"""
+from tkinter import *
+from tkinter.ttk import *
+
+import matplotlib
+matplotlib.use("TkAgg")
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
+root = Tk()
+
+figure = Figure(figsize=(5, 4), dpi=100)
+plot = figure.add_subplot(1, 1, 1)
+
+plot.plot(0.5, 0.3, color="red", marker="o", linestyle="")
+
+x = [ 0.1, 0.2, 0.3 ]
+y = [ -0.1, -0.2, -0.3 ]
+plot.plot(x, y, color="blue", marker="x", linestyle="")
+
+canvas = FigureCanvasTkAgg(figure, root)
+canvas.get_tk_widget().grid(row=0, column=0)
 
 root.mainloop()
