@@ -1,10 +1,14 @@
+from __future__ import division
 import time
 import ecgF as e
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.io
 from matplotlib.widgets import Cursor
-
+import talib as ta  
+'''
+To use Move mean use ta.MA(FUNCTION,perioad)
+'''
 def main():
     mat = scipy.io.loadmat('datas/31.10.2019.mat')
     

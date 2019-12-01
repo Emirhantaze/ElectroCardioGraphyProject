@@ -1,5 +1,6 @@
 from __future__ import division
 import numpy as np
+import talib as ta  
 def myfft(tin,fin):
     ECG=fin[np.arange(250,len(fin))]
     t=tin[np.arange(250,len(tin))]
@@ -27,3 +28,17 @@ def delete_first(t,f):
     t=t[i:len(t)]
     f=f[i:len(f)]
     return [t,f]
+def findPerf(t,f,flag):
+    temp=delete_first(t,f)
+    t=temp[0]
+    f=temp[1]
+    f=f-ta.MA(f,75)
+    temp=[]
+    ii=0
+    if(flag):
+        for i in np.arange(0,len(f)-100):
+            temp = [temp , np.mean(np.diff(f[i:i+100]))]
+            if np.abs(temp[i]==np.min(np.abs(temp))):
+                ii=i
+        f=f[ii:ii+100]
+        t=t[ii:ii+100]
