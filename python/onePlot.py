@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation #it makes an animation by repeatedly calling a function function
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-plt.style.use('fivethirtyeight')
+plt.style.use('fivethirtyeight') #just style to make it bold
 
 xvalues = []
 yvalues = []
