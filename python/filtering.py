@@ -25,9 +25,9 @@ with open("filter.csv","w") as csv_file:
     csv_writer.writeheader()
     info = {
                 "type": "butter",
-                "lowf": 1,
-                "highf":20,
-                "order":2
+                "lowf": 0.05,
+                "highf":30,
+                "order":5
                 
                 }
     csv_writer.writerow(info)
@@ -45,9 +45,9 @@ while True:
     #now we got raw whole signal now we get only last thousand values with checking size
     temp = len(y)
 
-    if temp>700:
-        y=y[temp-701:temp-1]
-        x=x[temp-701:temp-1]
+    if temp>2000:
+        y=y[temp-2001:temp-1]
+        x=x[temp-2001:temp-1]
     #now moving avarage will be applied to signal
     
     #y=y-ta.MA(y,200)
@@ -69,10 +69,11 @@ while True:
         f=e.cheby_bandpass_filter(y,lowf,highf,Fs,order=order)
     elif(filtertype=="ellip"):
         f=e.ellip_bandpass_filter(y,lowf,highf,Fs,order=order)
-    with open("Filtereddata.csv","a") as csv_file:
+    with open("Filtereddata.csv","w") as csv_file:
         
         csv_writer = csv.DictWriter(csv_file, fieldnames=["t","f"])
-        for i in range(1,len(f)):
+        csv_writer.writeheader()
+        for i in range(500,len(f)):
             info={
                 "t":x[i],
                 "f":f[i]

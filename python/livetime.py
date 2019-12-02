@@ -14,11 +14,13 @@ y1 = data['x_value']
 x = data['total_1']
 def animate(i):
     data = pd.read_csv('Filtereddata.csv')
-    temp=len(data['f'])
-    y1 = data['f'][temp-650:temp-30]
-    x = data['t'][temp-650:temp-30]
+    temp=len(data['t'])
+    y1 = data['f']
+    x = data['t']
     plt.cla()
+    
     plt.plot(x,y1)
+    plt.xlim(x[temp-1]-5,x[temp-1])
     
     #plt.xlim(left=t-5,right=t-1)
 
@@ -27,7 +29,7 @@ def animate(i):
 t = len(x)
     #t=(x[t-1])
     
-ani = FuncAnimation(plt.gcf(),animate,interval=1000)
+ani = FuncAnimation(plt.gcf(),animate,interval=30)
 plt.show()    
         
    
