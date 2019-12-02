@@ -23,10 +23,9 @@ figure = Figure(figsize=(4, 5), dpi=100)
 plot = figure.add_subplot(1, 1, 1)
 
 def animate(i):
+    print()
     
-    
-    plot.plot([1,3,5,6])
-   
+ 
    
 
    
