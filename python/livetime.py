@@ -1,10 +1,10 @@
 from __future__ import division
 import time
 import pandas as pd
-import ecgF as e
+
 import numpy as np
 import scipy.io
-import talib as ta  
+
 import drawnow
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
@@ -17,9 +17,9 @@ def animate():
     
     plt.xlim(left=t-5,right=t-1)
 while True:
-    data = pd.read_csv('data.csv')
-    y1 = data['x_value']
-    x = data['total_1']
+    data = pd.read_csv('Rawdata.csv')
+    y1 = data['f']
+    x = data['t']
     
     t = len(x)
     t=(x[t-1])

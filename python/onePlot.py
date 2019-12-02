@@ -8,12 +8,14 @@ from matplotlib.figure import Figure
 from matplotlib.animation import FuncAnimation #it makes an animation by repeatedly calling a function function
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 root=tk.Tk()
+root.geometry('350x200')
 
 def buttonFunction():
-    b = Button(root, text="emihan's button", command=buttonFunction)
+   
     print('Hi! Ymir')
-    b.pack()
- 
+btn = tk.Button(root,text=" asd",command=buttonFunction)
+btn.grid(column=0,row=0)  
+
 plt.style.use('fivethirtyeight') #just style to make it bold
 
 xvalues = []

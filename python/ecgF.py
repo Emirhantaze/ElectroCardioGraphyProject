@@ -1,6 +1,6 @@
 from __future__ import division
 import numpy as np
-import talib as ta  
+#import talib as ta  
 from scipy.signal import butter, lfilter,cheby2,ellip
 # this page used for butterworth filter design 
 # https://scipy-cookbook.readthedocs.io/items/ButterworthBandpass.html
