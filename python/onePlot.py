@@ -32,7 +32,7 @@ def plotting(i):
 
 
 
-ani = FuncAnimation(plt.gcf(), plotting, interval=1000)
+#ani = FuncAnimation(plt.gcf(), plotting, interval=1000)
 
 plt.tight_layout()
 plt.show()

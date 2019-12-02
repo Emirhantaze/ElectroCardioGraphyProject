@@ -41,8 +41,8 @@ def butter_bandpass_filter(data, lowcut, highcut, fs, order=5):
     y = lfilter(b, a, data)
     return y    
 def myfft(tin,fin):
-    ECG=fin[np.arange(250,len(fin))]
-    t=tin[np.arange(250,len(tin))]
+    ECG=fin
+    t=tin
     L=len(t)
     Ts = np.mean(np.diff(t))
     Fs = 1/Ts                          
@@ -53,7 +53,7 @@ def myfft(tin,fin):
     temp=len(Fv)+1
     Iv = np.arange(1,temp)
     FECG = np.abs(FECG[Iv])/L
-    return [Fv,FECG]
+    return Fv,FECG
 def delete_first(t,f):
     flag = True
     i=0
