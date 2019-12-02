@@ -35,11 +35,12 @@ with open("Filtereddata.csv","w") as csv_file:
     csv_writer = csv.DictWriter(csv_file, fieldnames=["t","f"])
     csv_writer.writeheader()
 while True:
+    c=time.time()
     data = pd.read_csv('Rawdata.csv')
     y =  (data['f'].values)
     x =  (data['t'].values)
 
-    print(y)
+    
     #plt.plot(x,y)
     #now we got raw whole signal now we get only last thousand values with checking size
     temp = len(y)
@@ -48,7 +49,7 @@ while True:
         y=y[temp-701:temp-1]
         x=x[temp-701:temp-1]
     #now moving avarage will be applied to signal
-    c=time.time()
+    
     #y=y-ta.MA(y,200)
 
     #after moving avareage we gaot selected filter and cutoffs so that we can start
@@ -63,18 +64,20 @@ while True:
         f=y
     elif(filtertype=="butter"):
         f=e.butter_bandpass_filter(y,lowf,highf,Fs,order)
+        
     elif(filtertype=="cheby"):
         f=e.cheby_bandpass_filter(y,lowf,highf,Fs,order=order)
     elif(filtertype=="ellip"):
         f=e.ellip_bandpass_filter(y,lowf,highf,Fs,order=order)
-    with open("filtereddata.csv","w") as csv_file:
+    with open("Filtereddata.csv","a") as csv_file:
+        
         csv_writer = csv.DictWriter(csv_file, fieldnames=["t","f"])
-        csv_writer.writeheader()
-        info={
-            "t":x,
-            "f":f
-        }
-        csv_writer.writerows(info)
-    
+        for i in range(1,len(f)):
+            info={
+                "t":x[i],
+                "f":f[i]
+            }
+            csv_writer.writerow(info)
+    print(time.time()-c)
 
     

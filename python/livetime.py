@@ -12,20 +12,23 @@ t = 0
 data = pd.read_csv('data.csv')
 y1 = data['x_value']
 x = data['total_1']
-def animate():
+def animate(i):
+    data = pd.read_csv('Filtereddata.csv')
+    temp=len(data['f'])
+    y1 = data['f'][temp-650:temp-30]
+    x = data['t'][temp-650:temp-30]
+    plt.cla()
     plt.plot(x,y1)
     
-    plt.xlim(left=t-5,right=t-1)
-while True:
-    data = pd.read_csv('Rawdata.csv')
-    y1 = data['f']
-    x = data['t']
+    #plt.xlim(left=t-5,right=t-1)
+
+
+
+t = len(x)
+    #t=(x[t-1])
     
-    t = len(x)
-    t=(x[t-1])
-    
-    drawnow.drawnow(animate)
-        
+ani = FuncAnimation(plt.gcf(),animate,interval=1000)
+plt.show()    
         
    
 
