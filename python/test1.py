@@ -9,8 +9,7 @@ import matplotlib.animation as animation
 #---------End of imports
 
 fig = plt.Figure()
-
-x = np.arange(0, 2*np.pi, 0.01)        # x-array
+    # x-array
 
 def animate(i):
     line.set_ydata(np.sin(x+i/10.0))  # update the data
@@ -18,12 +17,18 @@ def animate(i):
 
 root = Tk.Tk()
 
-label = Tk.Label(root,text="SHM Simulation").grid(column=0, row=0)
+combo = Tk.Combobox(root, ftype=1, low=2, high= 3)
+
 
 canvas = FigureCanvasTkAgg(fig, master=root)
-canvas.get_tk_widget().grid(column=0,row=1)
+canvas.get_tk_widget().place()
 
-ax = fig.add_subplot(111)
+plt1 = fig.add_subplot(2221)
+plt2 = fig.add_subplot(2222)
+plt3 = fig.add_subplot(2223)
+plt4 = fig.add_subplot(2224)
+
+
 line, = ax.plot(x, np.sin(x))
 ani = animation.FuncAnimation(fig, animate, np.arange(1, 200), interval=25, blit=False)
 
