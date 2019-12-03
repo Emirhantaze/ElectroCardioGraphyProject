@@ -1,44 +1,30 @@
-
-import random
-from itertools import count
-import pandas as pd
-import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
-from tkinter import *
-from tkinter.ttk import *
-
-import matplotlib
-matplotlib.use("TkAgg")
-from matplotlib.figure import Figure
+#---------Imports
+from numpy import arange, sin, pi
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.figure import Figure
+import tkinter as Tk
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+#---------End of imports
 
-plt.style.use('fivethirtyeight')
+fig = plt.Figure()
 
-x_vals = []
-y_vals = []
-
-index = count()
-root = Tk()
-
-figure = Figure(figsize=(4, 5), dpi=100)
-plot = figure.add_subplot(1, 1, 1)
+x = np.arange(0, 2*np.pi, 0.01)        # x-array
 
 def animate(i):
-    print()
-    
- 
-   
+    line.set_ydata(np.sin(x+i/10.0))  # update the data
+    return line,
 
-   
-    
+root = Tk.Tk()
 
-btn = Button(root, text="Click Me")
- 
-btn.pack(side=tkinter.LEFT)
+label = Tk.Label(root,text="SHM Simulation").grid(column=0, row=0)
 
-canvas = FigureCanvasTkAgg(figure, root)
-canvas.get_tk_widget().pack(side=LEFT)
-ani = FuncAnimation(figure, animate, interval=1000)
+canvas = FigureCanvasTkAgg(fig, master=root)
+canvas.get_tk_widget().grid(column=0,row=1)
 
-root.mainloop()
-root.quit()
+ax = fig.add_subplot(111)
+line, = ax.plot(x, np.sin(x))
+ani = animation.FuncAnimation(fig, animate, np.arange(1, 200), interval=25, blit=False)
+
+Tk.mainloop()
