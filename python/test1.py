@@ -11,6 +11,7 @@ import matplotlib
 matplotlib.use("TkAgg")
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
 plt.style.use('fivethirtyeight')
 
 x_vals = []
@@ -34,7 +35,7 @@ def animate(i):
 
 btn = Button(root, text="Click Me")
  
-btn.pack(side=LEFT)
+btn.pack(side=tkinter.LEFT)
 
 canvas = FigureCanvasTkAgg(figure, root)
 canvas.get_tk_widget().pack(side=LEFT)

@@ -20,7 +20,7 @@ def animate(i):
     plt.cla()
     
     plt.plot(x,y1)
-    plt.xlim(x[temp-1]-5,x[temp-1])
+    plt.xlim(x[temp-1]-3,x[temp-1])
     
     #plt.xlim(left=t-5,right=t-1)
 
