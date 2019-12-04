@@ -19,17 +19,18 @@ def animate(i):
     x = data['t']
     plt.cla()
     
+    #y1=y1-mina
     plt.plot(x,y1)
-    plt.xlim(x[temp-1]-3,x[temp-1])
+    #plt.xlim(int(x[temp-1])-3,int(x[temp-1]))
     
-    #plt.xlim(left=t-5,right=t-1)
+    #plt.ylim(-200,500)
 
 
 
 t = len(x)
     #t=(x[t-1])
     
-ani = FuncAnimation(plt.gcf(),animate,interval=30)
+ani = FuncAnimation(plt.gcf(),animate,interval=100)
 plt.show()    
         
    

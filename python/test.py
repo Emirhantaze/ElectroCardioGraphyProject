@@ -2,34 +2,27 @@
 import csv
 import random
 import time
+import numpy as np
 
-x_value = 0
-total_1 = 1000
-total_2 = 1000
-
-fieldnames = ["x_value", "total_1", "total_2"]
+fieldnames = ["f", "t"]
 
 
-with open('data1.csv', 'w') as csv_file:
+with open('Rawdata.csv', 'w') as csv_file:
     csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
     csv_writer.writeheader()
-
+a=round(time.time(),3)
 while True:
-
-    with open('data1csv', 'a') as csv_file:
+    y=np.cos(2*3.14*1*(round((time.time()-a),3)))
+    x=time.time()-a
+    with open('Rawdata.csv', 'a') as csv_file:
         csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
 
         info = {
-            "x_value": x_value,
-            "total_1": total_1,
-            "total_2": total_2
+            "f": y,
+            "t": x
+            
         }
 
         csv_writer.writerow(info)
-        print(x_value, total_1, total_2)
-
-        x_value += 1
-        total_1 = total_1 + random.randint(-6, 8)
-        total_2 = total_2 + random.randint(-5, 6)
-
-    time.sleep(1)
+        
+    time.sleep(0.01)

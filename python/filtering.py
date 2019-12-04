@@ -18,13 +18,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 import ecgF  as e
 from decimal import getcontext
-from scipy.signal import butter, lfilter,cheby2,ellip,find_peaks,filtfilt,sosfilt
+
 getcontext().prec = 4
 with open("filter.csv","w") as csv_file:
     csv_writer = csv.DictWriter(csv_file, fieldnames=["type","lowf","highf","order"])
     csv_writer.writeheader()
     info = {
-                "type": "butter",
+                "type": "none",
                 "lowf": 0.05,
                 "highf":30,
                 "order":5
@@ -45,14 +45,15 @@ while True:
     #now we got raw whole signal now we get only last thousand values with checking size
     temp = len(y)
 
-    if temp>2000:
-        y=y[temp-2001:temp-1]
-        x=x[temp-2001:temp-1]
+    if temp>20:
+        y=y[temp-21:temp-1]
+        x=x[temp-21:temp-1]
     #now moving avarage will be applied to signal
-    
+    #Cause of real number problem rigth now we will not use moving avarage method
+    #If we found a clear solution it will be replaced
     #y=y-ta.MA(y,200)
 
-    #after moving avareage we gaot selected filter and cutoffs so that we can start
+    #after moving avareage we got selected filter and cutoffs so that we can start
     temp=pd.read_csv("filter.csv")
     temp1=len(temp["type"])
     filtertype=(temp["type"][temp1-1])
@@ -69,16 +70,17 @@ while True:
         f=e.cheby_bandpass_filter(y,lowf,highf,Fs,order=order)
     elif(filtertype=="ellip"):
         f=e.ellip_bandpass_filter(y,lowf,highf,Fs,order=order)
-    with open("Filtereddata.csv","w") as csv_file:
+    with open("Filtereddata.csv","a") as csv_file:
         
         csv_writer = csv.DictWriter(csv_file, fieldnames=["t","f"])
         csv_writer.writeheader()
-        for i in range(500,len(f)):
+        for i in range(1,len(f)):
             info={
                 "t":x[i],
                 "f":f[i]
             }
             csv_writer.writerow(info)
     print(time.time()-c)
+    time.sleep(0.05)
 
     
