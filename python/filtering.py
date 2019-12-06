@@ -1,25 +1,29 @@
 from __future__ import division
 """
 our first method will be the taking signal
-Then to analayze we take the last x values of it
+Then to analayze the last taken x values of incoming signal
 then we move it to the moving avarage filter 
-then filtering with selected mod, order and frequencies 
-then peak finding
-then plotting out everything
+then filtering by a bunch of selected mods such as butter, cheby, elliptic its order and frequencies 
+after that we are going to find peaks
+Later, plotting out everything
 """
 '''
 Author Emirhan Taze
 '''
-import pandas as pd
+import pandas as pd #stand for Python Data Analysis Library # 
+            #it takes data (like a CSV or TSV file, or a SQL database),
+             #  and creates a Python object with rows and columns
 #import talib as ta
-import csv
+import csv #read and write the data
 import time
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt #plotting library for python
 import numpy as np
 import ecgF  as e
-from decimal import getcontext
 
-getcontext().prec = 4
+from decimal import getcontext #fast correctly rounded decimal points aritmetic
+
+#getcontext().prec = 4
+
 with open("filter.csv","w") as csv_file:
     csv_writer = csv.DictWriter(csv_file, fieldnames=["type","lowf","highf","order"])
     csv_writer.writeheader()
@@ -31,6 +35,9 @@ with open("filter.csv","w") as csv_file:
                 
                 }
     csv_writer.writerow(info)
+
+say=2000
+
 with open("Filtereddata.csv","w") as csv_file:
     csv_writer = csv.DictWriter(csv_file, fieldnames=["t","f"])
     csv_writer.writeheader()
@@ -45,9 +52,9 @@ while True:
     #now we got raw whole signal now we get only last thousand values with checking size
     temp = len(y)
 
-    if temp>20:
-        y=y[temp-21:temp-1]
-        x=x[temp-21:temp-1]
+    if temp>2000:
+        y=y[temp-2000+1:temp-1]
+        x=x[temp-2000+1:temp-1]
     #now moving avarage will be applied to signal
     #Cause of real number problem rigth now we will not use moving avarage method
     #If we found a clear solution it will be replaced
@@ -70,17 +77,18 @@ while True:
         f=e.cheby_bandpass_filter(y,lowf,highf,Fs,order=order)
     elif(filtertype=="ellip"):
         f=e.ellip_bandpass_filter(y,lowf,highf,Fs,order=order)
+    c=time.time()-c
+    say=int(round((c*Fs),0))
     with open("Filtereddata.csv","a") as csv_file:
         
         csv_writer = csv.DictWriter(csv_file, fieldnames=["t","f"])
-        csv_writer.writeheader()
-        for i in range(1,len(f)):
+        #csv_writer.writeheader()
+        for i in range(len(f)-say+1,len(f)-1):
             info={
                 "t":x[i],
                 "f":f[i]
             }
             csv_writer.writerow(info)
-    print(time.time()-c)
-    time.sleep(0.05)
-
+    
+    print(round((c*Fs),0))
     

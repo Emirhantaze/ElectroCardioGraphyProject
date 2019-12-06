@@ -12,11 +12,12 @@ t = 0
 data = pd.read_csv('data.csv')
 y1 = data['x_value']
 x = data['total_1']
+time.sleep(1)
 def animate(i):
     data = pd.read_csv('Filtereddata.csv')
     temp=len(data['t'])
-    y1 = data['f']
-    x = data['t']
+    y1 = data['f'][temp-600:temp]
+    x = data['t'][temp-600:temp]
     plt.cla()
     
     #y1=y1-mina
