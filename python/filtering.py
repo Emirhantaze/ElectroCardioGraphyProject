@@ -17,7 +17,7 @@ import pandas as pd #stand for Python Data Analysis Library #
 import csv #read and write the data
 import time
 import matplotlib.pyplot as plt #plotting library for python
-import numpy as np
+import numpy as np #scientific computing library which contains Fourier, Linear Algebra etc.
 import ecgF  as e
 
 from decimal import getcontext #fast correctly rounded decimal points aritmetic

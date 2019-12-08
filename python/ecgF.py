@@ -2,7 +2,7 @@ from __future__ import division
 import numpy as np
 #import talib as ta  
 from scipy.signal import butter, lfilter,cheby2,ellip
-# this page used for butterworth filter design 
+# this page is used for butterworth filter design 
 # https://scipy-cookbook.readthedocs.io/items/ButterworthBandpass.html
 def cheby_bandpass(lowcut, highcut, fs, order=5):
     nyq = 0.5 * fs
@@ -71,7 +71,7 @@ def findPerf(t,f,flag):
     temp=delete_first(t,f)
     t=temp[0]
     f=temp[1]
-    f=f-ta.MA(f,75)
+    #f=f-ta.MA(f,75)
     temp=[]
     ii=0
     if(flag):
