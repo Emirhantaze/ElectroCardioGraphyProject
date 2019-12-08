@@ -1,4 +1,4 @@
-
+"""
 #---------Imports
 from numpy import arange, sin, pi
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -40,7 +40,7 @@ Tk.mainloop()
 from numpy import arange, sin, pi
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
-import Tkinter as Tk
+import tkinter as Tk
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
@@ -66,4 +66,3 @@ line, = ax.plot(x, np.sin(x))
 ani = animation.FuncAnimation(fig, animate, np.arange(1, 200), interval=25, blit=False)
 
 Tk.mainloop()
-"""
