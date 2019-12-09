@@ -83,12 +83,15 @@ while True:
         
         csv_writer = csv.DictWriter(csv_file, fieldnames=["t","f"])
         #csv_writer.writeheader()
-        for i in range(len(f)-say,len(f)-1):
-            info={
-                "t":round(x[i],3),
-                "f":round(f[i],1)
-            }
-            csv_writer.writerow(info)
-    
+        
+        try:
+            for i in range(len(f)-say,len(f)-1):
+                info={
+                    "t":round(x[i],3),
+                    "f":round(f[i],1)
+                }
+                csv_writer.writerow(info)
+        except:
+            print()
     print(round((c*Fs),0))
     

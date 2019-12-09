@@ -11,6 +11,8 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import csv
 import pandas as pd
+import ecgF as e
+from scipy.signal import find_peaks
 #---------End of imports
 root = Tk.Tk()
 root.title("Electrocardiograhp (ECG) Simulation")
@@ -19,30 +21,61 @@ fig = plt.Figure(figsize=(12,7))
        # x-array
 
 
-xt=0
+xf=1
+xr=1
+data=pd.read_csv('Filtereddata.csv',skiprows=xf,usecols=[0,1], names=['t', 'f'])
+temp=len(data)
+print(temp)
+if(temp>600):
+    xf=xf+temp-600
+data=pd.read_csv('Rawdata.csv',skiprows=xf,usecols=[0,1], names=['t', 'f'])
+temp=len(data)
+print(temp)
+if(temp>600):
+    xr=xr+temp-600
 def animate(i):
     x=0
     y1=0
     rows=[]
     a=time.time()
-    global xt
-    data=pd.read_csv('Rawdata.csv',skiprows=xt,usecols=[0,1], names=['t', 'f'])
+    global xr,xf
+    data=pd.read_csv('Rawdata.csv',skiprows=xr,usecols=[0,1], names=['t', 'f'])
     temp=len(data)
     print(temp)
     if(temp>600):
-        xt=xt+temp-600
+        xr=xr+temp-600
     data_top = data.head()  
     print(data_top)
-    y1 = data["t"]
-    x = data["f"]
+    y1 = data["f"]
+    x = data["t"]
     
     ax1.cla()
+    ax2.cla()
     
     #y1=y1-3456
-    try:
-        ax1.plot(x,y1)
-    except:
-        print()
+    
+    ax1.plot(x,y1)
+    x,y=e.myfft(x,y1)
+    ax2.plot(x,y)
+    
+    data=pd.read_csv('Filtereddata.csv',skiprows=xf,usecols=[0,1], names=['t', 'f'])
+    temp=len(data)
+    print(temp)
+    if(temp>600):
+        xf=xf+temp-600
+    data_top = data.head()  
+    print(data_top)
+    y1 = data["f"]
+    x = data["t"]
+    peaks, _ = find_peaks(y1, distance=110)
+    ax3.cla()
+    ax4.cla()
+    #y1=y1-3456
+    
+    ax3.plot(x,y1)
+    ax3.plot(x[peaks], y1[peaks], "x")
+    x,y=e.myfft(x,y1)
+    ax4.plot(x,y)
     print(time.time()-a)
     #ax1.cla()
     
