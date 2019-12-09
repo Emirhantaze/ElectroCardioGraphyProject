@@ -9,16 +9,16 @@
         filters folder;
         
     4: 
-        next step is going a bit further and make filters uniqe for each signal
+        next step is going a bit further and make filters uniqeu for each signal
         a:
             first we know that there are lower and higher unwanted frequncies in our functions 
-            the deal is how to find which are them are necessary ones:
+            the deal is how to find which of them are necessary ones:
         b:
-            At first we try to find best part of signal itself
+            At first, we try to find best part of signal itself
         c: 
             using islocalmax,min and its coefficients determining the real peaks and drops;
         d:
-            then wheter filtering or avaraging the areas which are nnot the "R S T" peaks or drops;
+            then wheter filtering or avaraging the areas which are not the "R, S, T" peaks or drops;
         
         this is the first approches to filter signal;
         
