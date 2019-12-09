@@ -16,6 +16,7 @@ import ecgF as e
 from scipy.signal import find_peaks
 from decimal import getcontext #fast correctly rounded decimal points aritmetic
 def f():
+    global filteredsignal,filteredsignaltime
     with open("filter.csv","w") as csv_file:
         csv_writer = csv.DictWriter(csv_file, fieldnames=["type","lowf","highf","order"])
         csv_writer.writeheader()
@@ -60,6 +61,7 @@ def f():
         lowf=temp["lowf"][temp1-1]
         order=temp["order"][temp1-1]
         Fs = 1/(np.mean(np.diff(x)))
+        sleep(0.05)
         if(filtertype=="none"):
             f=y
         elif(filtertype=="butter"):
@@ -82,13 +84,15 @@ def f():
                         "t":round(x[i],3),
                         "f":round(f[i],1)
                     }
+                    filteredsignal=np.append(filteredsignal,round(f[i],1))
+                    filteredsignaltime=np.append(filteredsignaltime,round(x[i],3))
                     csv_writer.writerow(info)
             except:
                 print()
-        print(round((c*Fs),0))
+        #print(int(round((c*Fs),0)))
 def t():
-    fieldnames = ["f", "t"]
-
+    fieldnames = ["t", "f"]
+    global rawsignal,rawsignaltime
 
     with open('Rawdata.csv', 'w') as csv_file:
         csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
@@ -96,70 +100,64 @@ def t():
     a=round(time.time(),3)
     while True:
         y=np.cos(2*3.14*1*(round((time.time()-a),3)))
-        x=time.time()-a
+        x=round(time.time()-a,4)
         with open('Rawdata.csv', 'a') as csv_file:
             csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
 
             info = {
-                "f": y,
+                "f": round(y,2),
                 "t": x
                 
             }
-            
+            rawsignaltime=np.append(rawsignaltime,x)
+            rawsignal=np.append(rawsignal,round(y,2))
             csv_writer.writerow(info)
-            
+        temp = len(rawsignal)
+        if(temp>600):
+            rawsignal=rawsignal[temp-600:temp-1]
+            rawsignaltime=rawsignaltime[temp-600:temp-1]
         time.sleep(0.005)
 def tekrarla(ne="a", bekleme=0):
     while True:
         print (ne)
         #sleep(bekleme)
-def tekrar(ne="b", bekleme=0):
-    while True:
-        print (ne)
+
         #sleep(bekleme)
 def animate(i):
-    x=0
-    y1=0
-    rows=[]
+    
+    global filteredsignal,filteredsignaltime,rawsignal,rawsignaltime
     a=time.time()
-    global xr,xf
-    data=pd.read_csv('Rawdata.csv',skiprows=xr,usecols=[0,1], names=['t', 'f'])
-    temp=len(data)
-    print(temp)
-    if(temp>600):
-        xr=xr+temp-600
-    data_top = data.head()  
-    print(data_top)
-    y1 = data["f"]
-    x = data["t"]
-    
-    ax1.cla()
-    ax2.cla()
-    
+    #x,y1=e.itself(rawsignaltime,rawsignal)
+    #print(x[1])
+    x=rawsignaltime
+    y1=rawsignal
+    if(i>4 and (i%4)==0):
+        ax1.cla()
+        ax2.cla()
+        ax3.cla()
+        ax4.cla()
+   
     #y1=y1-3456
     
-    ax1.plot(x,y1)
-    x,y=e.myfft(x,y1)
-    ax2.plot(x,y)
+    ax1.plot(x,y1,"b")
     
-    data=pd.read_csv('Filtereddata.csv',skiprows=xf,usecols=[0,1], names=['t', 'f'])
-    temp=len(data)
-    print(temp)
-    if(temp>600):
-        xf=xf+temp-600
-    data_top = data.head()  
-    print(data_top)
-    y1 = data["f"]
-    x = data["t"]
+    
+    x,y=e.myfft(x,y1)
+    ax2.plot(x,y,"b") 
+    
+    
+    temp = len(filteredsignal)
+    y1=filteredsignal[temp-600:temp-1]
+    x=filteredsignaltime[temp-600:temp-1]
+    
     peaks, _ = find_peaks(y1, distance=110)
-    ax3.cla()
-    ax4.cla()
+    
     #y1=y1-3456
     
-    ax3.plot(x,y1)
-    ax3.plot(x[peaks], y1[peaks], "x")
+    ax3.plot(x,y1,"b")
+    ax3.plot(x[peaks], y1[peaks], "xr")
     x,y=e.myfft(x,y1)
-    ax4.plot(x,y)
+    ax4.plot(x,y,"b")
     print(time.time()-a)
     #ax1.cla()
     
@@ -181,12 +179,15 @@ if __name__ == '__main__':
     
     tis = Thread(target = f)#, args = ("tis",0.5))
     ah = Thread(target = t)#, args = ("ah",3))
-
-    #dum.start()
+    filteredsignal=[]
+    filteredsignaltime=[]
+    rawsignal=[]
+    rawsignaltime=[]
     
     ah.start()
-    sleep(1)
+    sleep(.01)
     tis.start()
+    sleep(5)
     root = Tk.Tk()
     root.title("Electrocardiograhp (ECG) Simulation")
     fig = plt.Figure(figsize=(12,7))
@@ -240,6 +241,6 @@ if __name__ == '__main__':
     bpmlabel=Tk.Label(frametop,text="BPM: ")
     bpmlabel.pack(side="left")
 
-    ani = animation.FuncAnimation(fig, animate, interval=200)
+    ani = animation.FuncAnimation(fig, animate, interval=30)
     print('succes')
     Tk.mainloop()

@@ -40,6 +40,19 @@ def butter_bandpass_filter(data, lowcut, highcut, fs, order=5):
     b, a = butter_bandpass(lowcut, highcut, fs, order=order)
     y = lfilter(b, a, data)
     return y    
+def itself(tin,fin):
+    temp1=len(tin)
+    temp2=len(fin)
+    a=tin
+    b=fin
+    if(temp1==temp2):
+        return a,b
+    elif(temp1<temp2):
+        return a,b[1:temp1]
+    else:
+        return a[1:temp2],b
+        
+
 def myfft(tin,fin):
     ECG=fin
     t=tin
