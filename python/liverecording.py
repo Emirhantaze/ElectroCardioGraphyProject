@@ -5,7 +5,8 @@ import time
 from decimal import getcontext
 #sudo chmod a+rw /dev/ttyACM1
 #ser = serial.Serial("/dev/ttyACM1")
-ser = serial.Serial("/dev/cu.usbmodem14101")
+#ser = serial.Serial("/dev/cu.usbmodem14101")
+ser = serial.Serial("COM3")
 fieldnames = ["t","f"]
 print(serial.tools.list_ports.comports().__getitem__(0))
 with open('Rawdata.csv', 'w') as csv_file:

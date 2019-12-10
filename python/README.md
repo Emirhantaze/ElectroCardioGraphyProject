@@ -4,12 +4,7 @@ dependecies:
     Ta-lib
     numpy
     scipy
-<<<<<<< HEAD
     matplotlib
     dranow
-=======
-    drawnow
-    matplotlib
-    decimal
->>>>>>> 890c1f2be05bf1cd08970eecf41d90d136bd8518
+    https://github.com/shiftkey/desktop/releases/tag/release-1.6.1-linux1
 if you think there is missing please mention it so that we can indicate it

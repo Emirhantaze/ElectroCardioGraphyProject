@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 import scipy.io
 
-import drawnow
+
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 t = 0
@@ -31,7 +31,7 @@ def animate(i):
 t = len(x)
     #t=(x[t-1])
     
-ani = FuncAnimation(plt.gcf(),animate,interval=100)
+ani = FuncAnimation(plt.gcf(),animate,interval=20)
 plt.show()    
         
    
