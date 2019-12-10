@@ -7,6 +7,8 @@ from matplotlib.figure import Figure
 import tkinter as Tk
 import numpy as np
 import time
+import matplotlib
+matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import csv
@@ -20,7 +22,7 @@ fig = plt.Figure(figsize=(12,7))
 #root.attributes("-zoomed", True)
        # x-array
 
-
+#What are the purpose of them? ask emirhan
 xf=1
 xr=1
 data=pd.read_csv('Filtereddata.csv',skiprows=xf,usecols=[0,1], names=['t', 'f'])
@@ -89,7 +91,7 @@ v = ["butter", "ellip", "cheby", "none"]
 label = Tk.Label(frametop, text="Filter Type Selection: ").pack(side="left")
 combo = Combobox(frametop, values=v, state="readonly")
 combo.set("none")
-
+#Defining labels and boxex for input enterance
 combo.pack(side="left")
 label1 = Tk.Label(frametop,text="Low Frequency").pack(side="left")
 v1 = StringVar()
