@@ -1,4 +1,5 @@
 
+"""
 #---------Imports
 from numpy import arange, sin, pi
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -17,7 +18,7 @@ def animate(i):
 
 root = Tk.Tk()
 
-combo = Tk.Combobox(root, ftype=1, low=2, high= 3)
+#combo = Tk.Combobox(root, ftype=1, low=2, high= 3)
 
 
 
@@ -40,13 +41,14 @@ Tk.mainloop()
 from numpy import arange, sin, pi
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
-import Tkinter as Tk
+import tkinter as Tk
+from tkinter.ttk import Combobox
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 #---------End of imports
 
-fig = plt.Figure()
+fig = plt.Figure(figsize=(10,10))
 
 x = np.arange(0, 2*np.pi, 0.01)        # x-array
 
@@ -55,15 +57,19 @@ def animate(i):
     return line,
 
 root = Tk.Tk()
+v = ["butter", "ellip", "cheby","none"]
+combo =Combobox(root, values=v)
 
-label = Tk.Label(root,text="SHM Simulation").grid(column=0, row=0)
+combo.set("none")
+combo.grid(row=0,column=0)
+root.geometry("900x720")
+label = Tk.Label(root,text="SHM Simulation").place()
 
 canvas = FigureCanvasTkAgg(fig, master=root)
-canvas.get_tk_widget().grid(column=0,row=1)
+canvas.get_tk_widget().place(relx=0.5, rely=0.1,anchor="n")
 
 ax = fig.add_subplot(111)
 line, = ax.plot(x, np.sin(x))
 ani = animation.FuncAnimation(fig, animate, np.arange(1, 200), interval=25, blit=False)
 
 Tk.mainloop()
-"""
