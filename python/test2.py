@@ -89,6 +89,10 @@ def f():
                     csv_writer.writerow(info)
             except:
                 print()
+        temp = len(filteredsignal)
+        if(temp>600):
+            filteredsignal=filteredsignal[temp-600:temp-1]
+            filteredsignaltime=filteredsignaltime[temp-600:temp-1]
         #print(int(round((c*Fs),0)))
 def t():
     fieldnames = ["t", "f"]
@@ -124,37 +128,33 @@ def tekrarla(ne="a", bekleme=0):
 
         #sleep(bekleme)
 def animate(i):
-    
-    global filteredsignal,filteredsignaltime,rawsignal,rawsignaltime
     a=time.time()
+    global filteredsignal,filteredsignaltime,rawsignal,rawsignaltime
+    
     #x,y1=e.itself(rawsignaltime,rawsignal)
     #print(x[1])
-    x=rawsignaltime
-    y1=rawsignal
-    if(i>4 and (i%4)==0):
-        ax1.cla()
+    x,y1=e.itself(rawsignaltime,rawsignal)
+    if(i>4 and (i%5)==0):
+        
         ax2.cla()
-        ax3.cla()
         ax4.cla()
    
     #y1=y1-3456
-    
-    ax1.plot(x,y1,"b")
+    temp=len(x)
+    ax1.plot(x[temp-20:temp],y1[temp-20:temp],"b")
     
     
     x,y=e.myfft(x,y1)
     ax2.plot(x,y,"b") 
     
     
-    temp = len(filteredsignal)
-    y1=filteredsignal[temp-600:temp-1]
-    x=filteredsignaltime[temp-600:temp-1]
+    x,y1=e.itself(filteredsignaltime,filteredsignal)
     
     peaks, _ = find_peaks(y1, distance=110)
     
     #y1=y1-3456
-    
-    ax3.plot(x,y1,"b")
+    temp=len(x)
+    ax3.plot(x[temp-20:temp],y1[temp-20:temp],"b")
     ax3.plot(x[peaks], y1[peaks], "xr")
     x,y=e.myfft(x,y1)
     ax4.plot(x,y,"b")

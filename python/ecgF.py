@@ -48,9 +48,9 @@ def itself(tin,fin):
     if(temp1==temp2):
         return a,b
     elif(temp1<temp2):
-        return a,b[1:temp1]
+        return a[0:temp1],b[0:temp1]
     else:
-        return a[1:temp2],b
+        return a[0:temp2],b[0:temp2]
         
 
 def myfft(tin,fin):
