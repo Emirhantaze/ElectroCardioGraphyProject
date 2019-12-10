@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt #plotting library for python
 import numpy as np #scientific computing library which contains Fourier, Linear Algebra etc.
 import ecgF  as e
 import pandas as pd
-import ecgF as e
+#import ecgF as e
 from scipy.signal import find_peaks
 from decimal import getcontext #fast correctly rounded decimal points aritmetic
 def f():
