@@ -5,18 +5,19 @@ import pandas as pd
 import numpy as np
 import scipy.io
 
-import drawnow
+
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 t = 0
 data = pd.read_csv('data.csv')
 y1 = data['x_value']
 x = data['total_1']
+time.sleep(1)
 def animate(i):
     data = pd.read_csv('Filtereddata.csv')
     temp=len(data['t'])
-    y1 = data['f']
-    x = data['t']
+    y1 = data['f'][temp-600:temp]
+    x = data['t'][temp-600:temp]
     plt.cla()
     
     #y1=y1-mina
@@ -30,7 +31,7 @@ def animate(i):
 t = len(x)
     #t=(x[t-1])
     
-ani = FuncAnimation(plt.gcf(),animate,interval=100)
+ani = FuncAnimation(plt.gcf(),animate,interval=20)
 plt.show()    
         
    
