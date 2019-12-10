@@ -1,41 +1,5 @@
-"""
-#---------Imports
-from numpy import arange, sin, pi
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from matplotlib.figure import Figure
-import tkinter as Tk
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
-#---------End of imports
-
-fig = plt.Figure()
-    # x-array
-
-def animate(i):
-    print()
-
-root = Tk.Tk()
-
-combo = Tk.Combobox(root, ftype=1, low=2, high= 3)
 
 
-
-
-plt1 = fig.add_subplot(2221)
-plt2 = fig.add_subplot(2222)
-plt3 = fig.add_subplot(2223)
-plt4 = fig.add_subplot(2224)
-canvas = FigureCanvasTkAgg(fig, master=root)
-canvas.get_tk_widget().place()
-
-
-
-ani = animation.FuncAnimation(fig, animate, interval=30)
-
-Tk.mainloop()
-
-"""
 #---------Imports
 from tkinter.ttk import Combobox
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -44,7 +8,10 @@ import tkinter as Tk
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+import matplotlib
+
 #---------End of imports
+matplotlib.use('MacOSX')
 root = Tk.Tk()
 fig = plt.Figure(figsize=(12,7))
 #root.attributes("-zoomed", True)
