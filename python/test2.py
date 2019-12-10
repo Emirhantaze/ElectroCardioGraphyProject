@@ -61,7 +61,7 @@ def f():
         lowf=temp["lowf"][temp1-1]
         order=temp["order"][temp1-1]
         Fs = 1/(np.mean(np.diff(x)))
-        sleep(0.05)
+        sleep(0.004)
         if(filtertype=="none"):
             f=y
         elif(filtertype=="butter"):
@@ -79,21 +79,22 @@ def f():
             #csv_writer.writeheader()
             
             try:
-                for i in range(len(f)-say,len(f)-1):
-                    info={
-                        "t":round(x[i],3),
-                        "f":round(f[i],1)
-                    }
-                    filteredsignal=np.append(filteredsignal,round(f[i],1))
-                    filteredsignaltime=np.append(filteredsignaltime,round(x[i],3))
-                    csv_writer.writerow(info)
+                if (say!=0):
+                    for i in range(len(f)-say-3,len(f)+1):
+                        info={
+                            "t":round(x[i],3),
+                            "f":round(f[i],1)
+                        }
+                        filteredsignal=np.append(filteredsignal,round(f[i],1))
+                        filteredsignaltime=np.append(filteredsignaltime,round(x[i],3))
+                        csv_writer.writerow(info)
             except:
                 print()
         temp = len(filteredsignal)
         if(temp>600):
-            filteredsignal=filteredsignal[temp-600:temp-1]
-            filteredsignaltime=filteredsignaltime[temp-600:temp-1]
-        #print(int(round((c*Fs),0)))
+            filteredsignal=filteredsignal[temp-600:temp]
+            filteredsignaltime=filteredsignaltime[temp-600:temp]
+        print(int(round((c*Fs),0)))
 def t():
     fieldnames = ["t", "f"]
     global rawsignal,rawsignaltime
@@ -118,9 +119,9 @@ def t():
             csv_writer.writerow(info)
         temp = len(rawsignal)
         if(temp>600):
-            rawsignal=rawsignal[temp-600:temp-1]
-            rawsignaltime=rawsignaltime[temp-600:temp-1]
-        time.sleep(0.005)
+            rawsignal=rawsignal[temp-600:temp]
+            rawsignaltime=rawsignaltime[temp-600:temp]
+        time.sleep(0.001)
 def tekrarla(ne="a", bekleme=0):
     while True:
         print (ne)
@@ -141,11 +142,11 @@ def animate(i):
    
     #y1=y1-3456
     temp=len(x)
-    ax1.plot(x[temp-20:temp],y1[temp-20:temp],"b")
-    
+    ax1.plot(x[temp-10:temp],y1[temp-10:temp],"r")
+    ax1.set_xlim(left=(x[temp-1]-5),right=(x[temp-1]))
     
     x,y=e.myfft(x,y1)
-    ax2.plot(x,y,"b") 
+    ax2.plot(x,y,"y") 
     
     
     x,y1=e.itself(filteredsignaltime,filteredsignal)
@@ -154,11 +155,12 @@ def animate(i):
     
     #y1=y1-3456
     temp=len(x)
-    ax3.plot(x[temp-20:temp],y1[temp-20:temp],"b")
+    ax3.plot(x[temp-10:temp],y1[temp-10:temp],"r")
     ax3.plot(x[peaks], y1[peaks], "xr")
+    ax3.set_xlim(left=(x[temp-1]-5),right=(x[temp-1]))
     x,y=e.myfft(x,y1)
-    ax4.plot(x,y,"b")
-    print(time.time()-a)
+    ax4.plot(x,y,"y")
+    #print(time.time()-a)
     #ax1.cla()
     
     #y1=y1-mina
@@ -185,14 +187,14 @@ if __name__ == '__main__':
     rawsignaltime=[]
     
     ah.start()
-    sleep(.01)
+    sleep(1)
     tis.start()
-    sleep(5)
+    sleep(1)
     root = Tk.Tk()
     root.title("Electrocardiograhp (ECG) Simulation")
-    fig = plt.Figure(figsize=(12,7))
+    fig = plt.Figure(figsize=(12,7),facecolor='black',edgecolor="black")
     #root.attributes("-zoomed", True)
-           # x-array
+    root.configure(background="black")      # x-array
 
 
     xf=1
@@ -235,12 +237,16 @@ if __name__ == '__main__':
     canvas.get_tk_widget().pack(side="bottom",fill="x")
 
     ax1 = fig.add_subplot(221)
+    ax1.set_fc("black")
     ax2 = fig.add_subplot(222)
+    ax2.set_fc("black")
     ax3 = fig.add_subplot(223)
+    ax3.set_fc("black")
     ax4 = fig.add_subplot(224)
+    ax4.set_fc("black")
     bpmlabel=Tk.Label(frametop,text="BPM: ")
     bpmlabel.pack(side="left")
 
-    ani = animation.FuncAnimation(fig, animate, interval=30)
+    ani = animation.FuncAnimation(fig, animate, interval=10)
     print('succes')
     Tk.mainloop()
