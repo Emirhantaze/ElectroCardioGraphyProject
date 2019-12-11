@@ -61,7 +61,7 @@ def f():
         lowf=temp["lowf"][temp1-1]
         order=temp["order"][temp1-1]
         Fs = 1/(np.mean(np.diff(x)))
-        sleep(0.004)
+        sleep(0.0101)
         if(filtertype=="none"):
             f=y
         elif(filtertype=="butter"):
@@ -80,7 +80,7 @@ def f():
             
             try:
                 if (say!=0):
-                    for i in range(len(f)-say-3,len(f)+1):
+                    for i in range(len(f)-say-1,len(f)+1):
                         info={
                             "t":round(x[i],3),
                             "f":round(f[i],1)
@@ -91,9 +91,9 @@ def f():
             except:
                 print()
         temp = len(filteredsignal)
-        if(temp>600):
-            filteredsignal=filteredsignal[temp-600:temp]
-            filteredsignaltime=filteredsignaltime[temp-600:temp]
+        if(temp>2008):
+            filteredsignal=filteredsignal[temp-2009:temp]
+            filteredsignaltime=filteredsignaltime[temp-2009:temp]
         print(int(round((c*Fs),0)))
 def t():
     fieldnames = ["t", "f"]
@@ -121,7 +121,7 @@ def t():
         if(temp>600):
             rawsignal=rawsignal[temp-600:temp]
             rawsignaltime=rawsignaltime[temp-600:temp]
-        time.sleep(0.001)
+        time.sleep(0.00001)
 def tekrarla(ne="a", bekleme=0):
     while True:
         print (ne)
@@ -135,7 +135,7 @@ def animate(i):
     #x,y1=e.itself(rawsignaltime,rawsignal)
     #print(x[1])
     x,y1=e.itself(rawsignaltime,rawsignal)
-    if(i>4 and (i%5)==0):
+    if(i>4 and (i%10)==0):
         
         ax2.cla()
         ax4.cla()
