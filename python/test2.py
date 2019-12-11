@@ -192,9 +192,9 @@ if __name__ == '__main__':
     sleep(1)
     root = Tk.Tk()
     root.title("Electrocardiograhp (ECG) Simulation")
-    fig = plt.Figure(figsize=(12,7),facecolor='black',edgecolor="black")
+    fig = plt.Figure(figsize=(12,7),facecolor='white',edgecolor="white")
     #root.attributes("-zoomed", True)
-    root.configure(background="black")      # x-array
+    root.configure(background="white")      # x-array
 
 
     xf=1
