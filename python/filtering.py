@@ -91,7 +91,8 @@ while True:
                     "f":round(f[i],1)
                 }
                 csv_writer.writerow(info)
+                print(round((c*Fs),0))
         except:
             print()
-    print(round((c*Fs),0))
+    
     

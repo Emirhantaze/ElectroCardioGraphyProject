@@ -30,7 +30,13 @@ while True:
                 
                 }
             
+            rawsignaltime=np.append(rawsignaltime,x)
+            rawsignal=np.append(rawsignal,round(y,2))
             csv_writer.writerow(info)
+        temp = len(rawsignal)
+        if(temp>600):
+            rawsignal=rawsignal[temp-600:temp]
+            rawsignaltime=rawsignaltime[temp-600:temp]
     except:
         print()
 

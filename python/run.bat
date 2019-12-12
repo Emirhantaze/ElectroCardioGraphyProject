@@ -1,2 +1,2 @@
-python test2.py
+python gui.py
 pause
