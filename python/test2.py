@@ -1,4 +1,10 @@
 from time import sleep
+#bluetooth connection codes
+#port="/dev/tty.HC-06-DevB"
+#bluetooth=serial.Serial(port, 9600)#
+#input_data=bluetooth.readline()
+#time.sleep(0.1)
+#bluetooth.close()
 from threading import Thread
 import tkinter as Tk
 from tkinter.ttk import Combobox
@@ -205,11 +211,7 @@ if __name__ == '__main__':
     sleep(1)
     root = Tk.Tk()
     root.title("Electrocardiograhp (ECG) Simulation")
-<<<<<<< HEAD
     fig = plt.Figure(figsize=(12,7),facecolor=(0.48, 0.48, 0.48),edgecolor="white")
-=======
-    fig = plt.Figure(figsize=(12,7),facecolor='white',edgecolor="white")
->>>>>>> 10fb78cce4964b4d67a138953a8908476b39ad2b
     #root.attributes("-zoomed", True)
     root.configure(background="white")      # x-array
 
@@ -255,15 +257,16 @@ if __name__ == '__main__':
 
     ax1 = fig.add_subplot(221)
     ax1.set_fc((0.16, 0.19, 0.20))
-    ax1.set_title("Raw ECG")
+    ax1.set_title("Raw ECG Signal")
     ax2 = fig.add_subplot(222)
     ax2.set_fc((0.16, 0.19, 0.20))
+    ax2.set_title("Fast Fourier Transform (FFT)")
     ax3 = fig.add_subplot(223)
     ax3.set_fc((0.16, 0.19, 0.20))
-    ax3.set_title("fft")
+    ax3.set_title("Filtered ECG Signal")
     ax4 = fig.add_subplot(224)
     ax4.set_fc((0.16, 0.19, 0.20))
-    ax4.set_title("x")
+    ax4.set_title("Fast Fourier Transform of Filtered ECG Signal")
     bpmlabel=Tk.Label(frametop,text="BPM: ")
     bpmlabel.pack(side="left")
 
