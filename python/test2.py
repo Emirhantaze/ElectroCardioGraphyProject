@@ -1,4 +1,10 @@
 from time import sleep
+#bluetooth connection codes
+#port="/dev/tty.HC-06-DevB"
+#bluetooth=serial.Serial(port, 9600)#
+#input_data=bluetooth.readline()
+#time.sleep(0.1)
+#bluetooth.close()
 from threading import Thread
 import tkinter as Tk
 from tkinter.ttk import Combobox
@@ -204,13 +210,12 @@ if __name__ == '__main__':
     tis.start()
     sleep(1)
     root = Tk.Tk()
+
     root.title("Electrocardiograhp (ECG) Simulation")
-<<<<<<< HEAD
+
     fig = plt.Figure(figsize=(12,7),facecolor=(0.48, 0.48, 0.48),edgecolor="white")
-=======
-    fig = plt.Figure(figsize=(12,7),facecolor='white',edgecolor="white")
->>>>>>> 10fb78cce4964b4d67a138953a8908476b39ad2b
     #root.attributes("-zoomed", True)
+
     root.configure(background="white")      # x-array
 
 
@@ -219,31 +224,39 @@ if __name__ == '__main__':
     data=pd.read_csv('Filtereddata.csv',skiprows=xf,usecols=[0,1], names=['t', 'f'])
     temp=len(data)
     print(temp)
+
     if(temp>600):
         xf=xf+temp-600
     data=pd.read_csv('Rawdata.csv',skiprows=xf,usecols=[0,1], names=['t', 'f'])
     temp=len(data)
     print(temp)
+
     if(temp>600):
         xr=xr+temp-600
     frametop =Tk.Frame(root)
     frametop.pack(side="top")
+
     v = ["butter", "ellip", "cheby", "none"]
-    label = Tk.Label(frametop, text="Filter Type Selection: ").pack(side="left")
+
+    label = Tk.Label(frametop, text="Filter Type Selection: " ).pack(side="left")
     combo = Combobox(frametop, values=v, state="readonly")
     combo.set("none")
 
     combo.pack(side="left")
-    label1 = Tk.Label(frametop,text="Low Frequency").pack(side="left")
+
+    label1 = Tk.Label(frametop,text="Low Frequency" ).pack(side="left")
     v1 = StringVar()
     entry1 = Tk.Entry(frametop,width=5,textvariable=v1).pack(side="left")
+
     v2 = StringVar()
-    label2 = Tk.Label(frametop,text="High frequency").pack(side="left")
+    label2 = Tk.Label(frametop,text="High frequency" ).pack(side="left")
     entry2 = Tk.Entry(frametop,width=5,textvariable=v2).pack(side="left")
+
     v3 = StringVar()
-    label3 = Tk.Label(frametop,text="Order (Cut-off) ").pack(side="left")
+    label3 = Tk.Label(frametop,text="Order (Cut-off)"  ).pack(side="left")
     entry3 = Tk.Entry(frametop,width=5,textvariable=v3).pack(side="left")
-    b = Tk.Button(frametop, text="OK", command=callback)
+
+    b = Tk.Button(frametop, text="OK" , command=callback)
     b.pack(side="left")
 
 
@@ -255,18 +268,26 @@ if __name__ == '__main__':
 
     ax1 = fig.add_subplot(221)
     ax1.set_fc((0.16, 0.19, 0.20))
-    ax1.set_title("Raw ECG")
+    ax1.set_title("Raw ECG Signal" )
+
     ax2 = fig.add_subplot(222)
     ax2.set_fc((0.16, 0.19, 0.20))
+    ax2.set_title("Fast Fourier Transform (FFT)" )
+
     ax3 = fig.add_subplot(223)
     ax3.set_fc((0.16, 0.19, 0.20))
-    ax3.set_title("fft")
+    ax3.set_title("Filtered ECG Signal" )
+
     ax4 = fig.add_subplot(224)
     ax4.set_fc((0.16, 0.19, 0.20))
-    ax4.set_title("x")
-    bpmlabel=Tk.Label(frametop,text="BPM: ")
+    ax4.set_title("Fast Fourier Transform of Filtered ECG Signal" )
+
+    bpmlabel = Tk.Label(frametop,text="BPM: " )
+
     bpmlabel.pack(side="left")
 
     ani = animation.FuncAnimation(fig, animate, interval=10)
+
     print('succes')
+
     Tk.mainloop()
