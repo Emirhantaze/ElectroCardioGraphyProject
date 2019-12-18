@@ -6,7 +6,7 @@ from decimal import getcontext
 #sudo chmod a+rw /dev/ttyACM1
 #ser = serial.Serial("/dev/ttyACM1")
 #ser = serial.Serial("/dev/cu.usbmodem14101")
-ser = serial.Serial("COM5")
+ser = serial.Serial("COM3",115200)
 fieldnames = ["t","f"]
 print(serial.tools.list_ports.comports().__getitem__(0))
 with open('Rawdata.csv', 'w') as csv_file:
@@ -25,18 +25,15 @@ while True:
 
             info = {
                 "f": ser.readline().decode(),
-                "t": ((s*1000-(s*1000)%1))/1000
+                "t": round(s,4)
 
                 
                 }
-            
-            rawsignaltime=np.append(rawsignaltime,x)
-            rawsignal=np.append(rawsignal,round(y,2))
+            print(round(s,4))
+
             csv_writer.writerow(info)
-        temp = len(rawsignal)
-        if(temp>600):
-            rawsignal=rawsignal[temp-600:temp]
-            rawsignaltime=rawsignaltime[temp-600:temp]
+     
+            
     except:
         print()
 

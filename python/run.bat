@@ -1,2 +1,2 @@
-python gui.py
+python livetime.py
 pause
