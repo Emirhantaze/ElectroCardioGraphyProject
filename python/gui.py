@@ -228,6 +228,7 @@ if __name__ == '__main__':
     ax4 = fig.add_subplot(224)
     ax4.set_fc((0.16, 0.19, 0.20))
     ax4.set_title("x")
+    line1 = ax1.plot()
     v=StringVar()
     bpmlabel=Tk.Label(frametop,textvariable=v)
     v.set("bpm= ")

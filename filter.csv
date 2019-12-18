@@ -1,2 +1,2 @@
 type,lowf,highf,order
-none,0.05,30,5
+butter,0.05,30,5
