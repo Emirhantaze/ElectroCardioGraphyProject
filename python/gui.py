@@ -18,8 +18,9 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from scipy.signal import find_peaks
 from multiprocessing import Process
+from matplotlib import style
 def saveraw():
-    ser = serial.Serial("COM3")
+    ser = serial.Serial("COM3",115200)
     fieldnames = ["t","f"]
     print(serial.tools.list_ports.comports().__getitem__(0))
     with open('Rawdata.csv', 'w') as csv_file:
@@ -53,7 +54,7 @@ def filtering():
         csv_writer = csv.DictWriter(csv_file, fieldnames=["type","lowf","highf","order"])
         csv_writer.writeheader()
         info = {
-                    "type": "butter",
+                    "type": "none",
                     "lowf": 0.05,
                     "highf":30,
                     "order":5
@@ -118,10 +119,13 @@ def filtering():
                         "f":round(f[i],1)
                     }
                     csv_writer.writerow(info)
-                    print(Fs)
+                    #print(Fs)
             except:
                 print("savet")
+        #animate(1);
 def animate(i):
+    global ax1,ax3
+    a=time.time()
     data = pd.read_csv('Rawdata.csv')
     temp=len(data['t'])
     y1 = data['f'][temp-500:temp].values
@@ -130,6 +134,7 @@ def animate(i):
     peaks, _ = find_peaks(y1, distance=int((60/110)*Fs))
     ax1.plot(x,y1,"r")
     ax1.plot(x[peaks],y1[peaks],"xy")
+    v.set("bpm: "+str(round(np.mean(np.diff(x[peaks]))*60/(len(peaks)-1),2))) 
     ax1.set_xlim(left=float(data['t'][temp-1])-5,right=float(data['t'][temp-1]))
     data = pd.read_csv('Filtereddata.csv')
     temp=len(data['t'])
@@ -140,7 +145,8 @@ def animate(i):
     ax3.set_xlim(left=float(data['t'][temp-1])-5,right=float(data['t'][temp-1]))
     peaks, _ = find_peaks(y1, distance=150)
     ax3.plot(x[peaks],y1[peaks],"xy")
-    v.set("bpm: "+str(round(np.mean(np.diff(x[peaks]))*60/(len(peaks)-1),2))) 
+    print(time.time()-a)
+    
 def guifunc():
     time.sleep(1)
     
@@ -160,14 +166,26 @@ def callback():
                 
                   }
         csv_writer.writerow(info)
+def test(ax1,ax3):
+    while True:
+        data = pd.read_csv('Rawdata.csv')
+        temp=len(data['t'])
+        y1 = data['f'][temp-500:temp].values
+        x = data['t'][temp-500:temp].values
+        Fs = 1/(np.mean(np.diff(x)))
+        
+        ax1.plot(x,y1,"r")
+        
+        #v.set("bpm: "+str(round(np.mean(np.diff(x[peaks]))*60/(len(peaks)-1),2))) 
 if __name__ == '__main__':
     target1 = Process(target = saveraw)
     target2 = Process(target = filtering)
-    
     target1.start()
-    sleep(2)
-    target2.start()
-    sleep(2)
+    
+    
+    
+    sleep(5)
+    target2.start() 
     
     
     
@@ -212,13 +230,13 @@ if __name__ == '__main__':
 
 
 
-
     canvas = FigureCanvasTkAgg(fig, master=root)
     #canvas.get_tk_widget().place(relx=0.5, rely=0.025, anchor="n")
     canvas.get_tk_widget().pack(side="bottom",fill="x")
-    global ax1
+    style.use('ggplot')
     ax1 = fig.add_subplot(221)
     ax1.set_fc((0.16, 0.19, 0.20))
+    line1, = ax1.plot(1,1)
     ax1.set_title("Raw ECG")
     ax2 = fig.add_subplot(222)
     ax2.set_fc((0.16, 0.19, 0.20))
@@ -232,5 +250,11 @@ if __name__ == '__main__':
     bpmlabel=Tk.Label(frametop,textvariable=v)
     v.set("bpm= ")
     bpmlabel.pack(side="left")
-    ani = FuncAnimation(fig,animate,interval=100)
+    #ani = FuncAnimation(fig,animate,interval=1)
+    
+    time.sleep(5)
+    print("succs")
     root.mainloop()
+   
+    
+    
