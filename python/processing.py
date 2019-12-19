@@ -12,7 +12,7 @@ from decimal import getcontext
 def saveraw():
     """
 
-    ser = serial.Serial("COM3",115200)
+    ser = serial.Serial("COM5",115200)
     fieldnames = ["t","f"]
     print(serial.tools.list_ports.comports().__getitem__(0))
     with open('Rawdata.csv', 'w') as csv_file:
@@ -37,8 +37,9 @@ def saveraw():
         except:
             print("saveerr")       
                 
-    """       
-    ser = serial.Serial("COM3",115200)
+    """
+    
+    ser = serial.Serial("COM5",115200)
     fieldnames = ["t","f"]
     print(serial.tools.list_ports.comports().__getitem__(0))
     with open('Rawdata.csv', 'w') as csv_file:
@@ -47,28 +48,40 @@ def saveraw():
     getcontext().prec = 4
     a=time.time()
     f=1
-    print(ser.readline().decode())
+    try:
+        ser.reset_input_buffer()
+        ser.readline()
+        ser.readline()
+        sleep(0.1)
+        print(ser.readline())
+    except:
+        print("")
+   
     while True:
-        s=time.time()-a
         
-       
-        with open('Rawdata.csv', 'a') as csv_file:
-            csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-            try :
-                f=float(ser.readline().decode())
-            except:
-                f=1
-            info = {
-                "f": round(f,5),
-                "t": round(s,5)
+        
+        try:
+            with open('Rawdata.csv', 'a') as csv_file:
+                csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+                try :
+                    x=ser.readline()
+                    f=x.split(",")
+                    s=f[1]-a
+                except:
+                    f=[1,1]
+                    s=1
+                info = {
+                    "f": round(float(f[0]),5),
+                    "t": round(s,5)
 
-                    
-                }
-            print(round(s,4))
+                        
+                    }
+                print(round(s,4))
 
-            csv_writer.writerow(info)
+                csv_writer.writerow(info)
          
-                
+        except:
+            print("")
         
              
 def filtering():
@@ -153,5 +166,6 @@ if __name__ == '__main__':
     target2 = Process(target = filtering)
     target1.start()
     sleep(5)
+
     target2.start()
     sleep(3)

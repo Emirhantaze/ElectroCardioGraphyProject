@@ -34,10 +34,11 @@ def animate(i):
         rn=rn*5
         peaks, _ = find_peaks(y1, distance=int((60/110)*Fs))       
         print(Fs)
-        v.set("BPM: "+str(60/np.mean(np.diff(x[peaks]))))
+        v.set("BPM: "+str(60/np.mean(np.diff(x[peaks[1:len(peaks)]]))))
         line11.set_data(x[rn],y1[rn])
         line12.set_data(x[peaks],y1[peaks])
         ax1.set_xlim(right=x[1999],left=x[1999]-3)
+        ax1.set_ylim(bottom=np.mean(y1)-100,top=np.mean(y1)+100)
         data = pd.read_csv('Filtereddata.csv')
         temp=len(data['t'])
         y1 = data['f'][temp-2000:temp].values
@@ -46,7 +47,9 @@ def animate(i):
         peaks, _ = find_peaks(y1, distance=int((60/110)*Fs))       
         line21.set_data(x[rn],y1[rn])
         line22.set_data(x[peaks],y1[peaks])
-        ax2.set_xlim(right=x[1999],left=x[1999]-3)       
+        ax2.set_xlim(right=x[1999],left=x[1999]-3)
+        ax2.set_ylim(bottom=np.mean(y1)-100,top=np.mean(y1)+100)
+        v.set("BPM: "+str(round(60/np.mean(np.diff(x[peaks[len(peaks)-4:len(peaks)-2]])),1)))
         
         
         
@@ -121,8 +124,8 @@ if __name__ == '__main__':
     ax4 = fig.add_subplot(224)
     ax4.set_fc((0.16, 0.19, 0.20))
     ax4.set_title("x")
-    ax1.set_ylim(bottom=-300,top=300)
-    ax2.set_ylim(bottom=-300,top=300)
+    ax1.set_ylim(bottom=0,top=500)
+    ax2.set_ylim(bottom=-300,top=600)
     v=StringVar()
     bpmlabel=Tk.Label(frametop,textvariable=v)
     v.set("bpm= ")
