@@ -1,2 +1,2 @@
-python liverecording.py
+python main_function.py
 pause

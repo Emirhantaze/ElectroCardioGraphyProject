@@ -4,17 +4,22 @@ import ecgF as e
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.io
+import pandas as pd
 from matplotlib.widgets import Cursor
-import talib as ta  
+  
 '''
 To use Move mean use ta.MA(FUNCTION,perioad)
 '''
 def main():
+    """
     mat = scipy.io.loadmat('datas/31.10.2019.mat') #loading matlab file
     
     t=mat['t9'][0] #What are the purpose of them?
     f=-mat['f9'][0]
-    
+    """
+    data = pd.read_csv('Rawdata.csv')
+    f =  (data['f'].values)
+    t =  (data['t'].values)
     tf=e.myfft(t,f)
     fig = plt.figure(figsize=(8, 6))
     plt.show(block=False) # what is that?
