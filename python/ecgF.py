@@ -65,7 +65,7 @@ def myfft(tin,fin):
     Fv = np.linspace(0, 1, temp)*Fn
     temp=len(Fv)+1
     Iv = np.arange(1,temp)
-    FECG = np.angle(FECG[Iv])/L
+    FECG = np.abs(FECG[Iv])/L
     return Fv,FECG
 def delete_first(t,f):
     flag = True
