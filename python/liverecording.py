@@ -23,8 +23,16 @@ while True:
        a=str(ser.readline())
        t=re.findall("[0-9]*",a)
        print(t)
-     
-            
+    with open('Rawdata.csv', 'w') as csv_file:
+        csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        csv_writer.writeheader()
+        info = {
+                    "f": t[3],
+                    "t": t[5]/10
+
+                        
+                    }
+        csv_writer.writerow(info)   
     except:
         print("test")
 
