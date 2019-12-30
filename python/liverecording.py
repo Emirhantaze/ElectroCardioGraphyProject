@@ -22,7 +22,7 @@ while True:
     try:
        a=str(ser.readline())
        t=re.findall("[0-9]*",a)
-       print(len(t))
+       print(t)
      
             
     except:
