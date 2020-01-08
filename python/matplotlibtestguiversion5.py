@@ -1,8 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
+import time
 from PIL import GifImagePlugin
-from matplotlib.animation import FuncAnimation
+#from matplotlib.animation import FuncAnimation
 from matplotlib.widgets import Button,Cursor,RadioButtons,Slider
 from matplotlib.text import Text
 import pandas as pd
@@ -12,9 +13,10 @@ from time import sleep
 from scipy.signal import find_peaks
 from serial.tools import list_ports
 import easygui
+from drawnow import drawnow
 ports=[];
-load_f=[]
-load_t=[]
+load_f=[1,34,2]
+load_t=[1,1,35]
 selected_port="";
 for x in list_ports.comports():
     ports.append(x)
@@ -23,32 +25,32 @@ for x in ports:
     
     if(str(x)==selected_portname):
         selected_port=x.device
-ser=serial.Serial(selected_port,115200)
-print(selected_port)
+#ser=serial.Serial(selected_port,115200)
+#print(selected_port)
 filetypes = [ ["*.csv", "*.Csv", "CSV files"] ,["All files","*"] ]
-ser.reset_input_buffer()
-ser.readline()
+#ser.reset_input_buffer()
+#ser.readline()
 sleep(1)
 imageObject = Image.open("./test.gif")
 imageObject.seek(0)
 j=0
-instant_t=[1]
-instant_f=[1]
+instant_t=[1,34,2]
+instant_f=[1,1,35]
 f=[1]
 t=[1]
-flag=True
+flag=False
 fig = plt.figure(figsize=(8,4.5),facecolor=(0.129,0.129,0.129))
 ax3=fig.add_subplot(212)
 line3, =ax3.plot([0],[0])
 ax2=fig.add_subplot(211)
 line2, =ax2.plot([0],[0])
 ax1=fig.add_subplot(111)
-line1, =ax1.plot([0],[0])
+line1, =ax1.plot([0,1],[0,1])
 line11, =ax1.plot([0],[0],"*r")
 line22, =ax2.plot([0],[0],"*r")
 line11.set_data([],[])
 line22.set_data([],[])
-line1.set_data([],[])
+#line1.set_data([],[])
 line2.set_data([],[])
 line3.set_data([],[])
 ax1.tick_params(axis='x', colors='white')
@@ -86,19 +88,47 @@ plotSelector = RadioButtons(plotSelectorax,("Raw ECG","Filtered Ecg","FFT of Fil
 ax1.set_visible(True)
 ax2.set_visible(False)
 ax3.set_visible(False)
-def update(i):
-    global j,t,f,instant_f,instant_t,flag
-    ecgax.clear()
-    ecgax.imshow(imageObject)
-    #ecgax.title("tetst")
-    ecgax.axis("off")
-    
-    if(j>=imageObject.n_frames-11):
-        j=0
+
+def axdefiner(label):
+    if(label=="MIXED"or False):
+        ax2.set_title(plotSelector.value_selected)
+        ax1.set_visible(False)
+        ax2.set_visible(True)
+        ax3.set_visible(True)
     else:
-        j=j+3
-    imageObject.seek(j)
-    i=0
+        ax1.set_title(plotSelector.value_selected)
+        ax1.set_visible(True)
+        ax2.set_visible(False)
+        ax3.set_visible(False)
+def start_stop(label):
+    global flag,instant_f,instant_t
+    if(flag==1):
+        flag=0
+    else:
+        ser.reset_input_buffer()
+        instant_f=[]
+        instant_t=[]
+        flag=1
+def load(label):
+    global load_f,load_t,flag
+    flag=False
+    print(type(instant_f))
+    path=easygui.fileopenbox(title="test",filetypes=filetypes,default="*.csv")
+    data = pd.read_csv(path)
+    
+    load_f = data['f'].values.tolist()
+    load_t = data['t'].values.tolist()
+
+
+    
+    
+    
+loadbutton.on_clicked(load)
+plotSelector.on_clicked(axdefiner)
+plusbutton.on_clicked(start_stop)
+
+while 1:
+    aaa=time.time()
     if flag:
         while ser.in_waiting>0:
             i=i+1
@@ -119,23 +149,20 @@ def update(i):
         instant_f=load_f
         instant_t=load_t
 
-    Fs = 1/np.mean(np.diff(instant_t))
-    print(i)
-    if Fs<50:
-        Fs=350
-    #print(1/np.mean(np.diff(instant_t)))
     
     if(plotSelector.value_selected=="Raw ECG"):
         try:
             if(len(instant_f)==len(instant_t)):
+                ax1.cla()
                 
-                line1.set_data(instant_t,instant_f)
+                ax1.plot(instant_t,instant_f,"g")
+                print(1)
             else:
                 pass
             peaks, _ = find_peaks(instant_f, distance=int((60/110)*Fs),height=90)
             try:
-                bpm=60/np.mean(np.diff(np.asarray(instant_t)[peaks]))
-                txt = ecgax.text(400,0,int(bpm),verticalalignment='center', horizontalalignment='center',size=50,color="blue")
+               pass
+                
             except:
                 pass
             
@@ -194,46 +221,6 @@ def update(i):
         else:
             pass
         pass
-
-    
-
-def axdefiner(label):
-    if(label=="MIXED"or False):
-        ax2.set_title(plotSelector.value_selected)
-        ax1.set_visible(False)
-        ax2.set_visible(True)
-        ax3.set_visible(True)
-    else:
-        ax1.set_title(plotSelector.value_selected)
-        ax1.set_visible(True)
-        ax2.set_visible(False)
-        ax3.set_visible(False)
-def start_stop(label):
-    global flag,instant_f,instant_t
-    if(flag==1):
-        flag=0
-    else:
-        ser.reset_input_buffer()
-        instant_f=[]
-        instant_t=[]
-        flag=1
-def load(label):
-    global load_f,load_t,flag
-    flag=False
-    print(type(instant_f))
-    path=easygui.fileopenbox(title="test",filetypes=filetypes,default="*.csv")
-    data = pd.read_csv(path)
-    
-    load_f = data['f'].values.tolist()
-    load_t = data['t'].values.tolist()
-
-
-    
-    
-    
-loadbutton.on_clicked(load)
-plotSelector.on_clicked(axdefiner)
-plusbutton.on_clicked(start_stop)
-
-ani = FuncAnimation(fig,update,interval=10)
+    ax1.set_title(np.round(time.time()-aaa,3))
+    plt.pause(0.00001)
 plt.show()
