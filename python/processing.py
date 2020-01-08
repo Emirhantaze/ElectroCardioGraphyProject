@@ -39,7 +39,7 @@ def saveraw():
                 
     """
     
-    ser = serial.Serial("COM5",115200)
+    ser = serial.Serial("COM3",115200)
     fieldnames = ["t","f"]
     print(serial.tools.list_ports.comports().__getitem__(0))
     with open('Rawdata.csv', 'w') as csv_file:
@@ -49,11 +49,14 @@ def saveraw():
     a=time.time()
     f=1
     try:
-        ser.reset_input_buffer()
+        
         ser.readline()
         ser.readline()
         sleep(0.1)
         print(ser.readline())
+        val = str(ser.readline().decode().strip('\r\n'))
+        a=int(val.split(" ")[1])
+        x=""
     except:
         print("")
    
@@ -64,20 +67,20 @@ def saveraw():
             with open('Rawdata.csv', 'a') as csv_file:
                 csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
                 try :
-                    x=ser.readline()
-                    f=x.split(",")
-                    s=f[1]-a
+                    x = str(ser.readline().decode().strip('\r\n'))
+                    f=x.split(" ")
+                    s=int(f[1])-a
                 except:
                     f=[1,1]
                     s=1
                 info = {
-                    "f": round(float(f[0]),5),
-                    "t": round(s,5)
+                    "f": f[0],
+                    "t": int(s)/1000
 
                         
                     }
-                print(round(s,4))
-
+                print(x)
+                sleep(0.001)
                 csv_writer.writerow(info)
          
         except:
@@ -165,7 +168,7 @@ if __name__ == '__main__':
     target1 = Process(target = saveraw)
     target2 = Process(target = filtering)
     target1.start()
-    sleep(5)
+    sleep(15)
 
     target2.start()
-    sleep(3)
+    

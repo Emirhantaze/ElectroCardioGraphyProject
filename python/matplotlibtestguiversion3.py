@@ -5,13 +5,23 @@ from PIL import GifImagePlugin
 from matplotlib.animation import FuncAnimation
 from matplotlib.widgets import Button,Cursor,RadioButtons,Slider
 from matplotlib.text import Text
+import pandas as pd
 imageObject = Image.open("./test.gif")
 imageObject.seek(0)
-j=0;
-fig = plt.figure(figsize=(12,6),facecolor=(0.129,0.129,0.129))
-ax=fig.add_subplot()
-ax.tick_params(axis='x', colors='white')
-ax.tick_params(axis='y', colors='white')
+j=0
+fig = plt.figure(figsize=(8,4.5),facecolor=(0.129,0.129,0.129))
+ax3=fig.add_subplot(212)
+line3, =ax3.plot([1,2,3],[1,2,3])
+ax2=fig.add_subplot(211)
+line2, =ax2.plot([1,2,3],[1,2,3])
+ax1=fig.add_subplot(111)
+line1, =ax1.plot([1,2,3],[1,2,3])
+ax1.tick_params(axis='x', colors='white')
+ax1.tick_params(axis='y', colors='white')
+ax2.tick_params(axis='x', colors='white')
+ax2.tick_params(axis='y', colors='white')
+ax3.tick_params(axis='x', colors='white')
+ax3.tick_params(axis='y', colors='white')
 fig.subplots_adjust(left=0.20,right=0.80,bottom=0.04)
 typeSelectorax = plt.axes([0.01,0.71,0.14,0.25])
 typeSelector = RadioButtons(typeSelectorax,("none","butter","ellip","cheby"))
@@ -38,19 +48,59 @@ applybutton = Button(applybuttonax,"apply",color="white",hovercolor=(0.15,0.15,0
 ecgax= plt.axes([0.78,0.57,0.30,0.30])
 plotSelectorax = plt.axes([0.86,0.38,0.14,0.25])
 plotSelector = RadioButtons(plotSelectorax,("Raw ECG","Filtered Ecg","FFT of Filtered","MIXED"))
+ax1.set_visible(True)
+ax2.set_visible(False)
+ax3.set_visible(False)
 def update(i):
     global j
-    ecgax.cla()
+
+    if(plotSelector.value_selected=="Raw ECG"):
+        data = pd.read_csv('Rawdata.csv')
+        temp=len(data['t'])
+        y1 = data['f'][temp-600:temp-1].values
+        x = data['t'][temp-600:temp-1].values
+        
+        line1.set_data(x,y1)
+        ax1.set_xlim(right=x[598]+2,left=x[598]-7)
+        ax1.set_ylim(bottom=np.mean(y1)-150,top=np.mean(y1)+150)
+        pass
+    elif(plotSelector.value_selected=="Filtered Ecg"):
+        data = pd.read_csv('Filtereddata.csv')
+        temp=len(data['t'])
+        y1 = data['f'][temp-600:temp-1].values
+        x = data['t'][temp-600:temp-1].values
+        line1.set_data(x,y1)
+        ax1.set_xlim(right=x[598]+2,left=x[598]-7)
+        ax1.set_ylim(bottom=np.mean(y1)-150,top=np.mean(y1)+150)
+        pass
+    elif(plotSelector.value_selected=="FFT of Filtered"):
+        pass
+    else:
+        pass
+
+    print("problem due to selections!!")
+    ecgax.clear()
     ecgax.imshow(imageObject)
     #ecgax.title("tetst")
     ecgax.axis("off")
     txt = ecgax.text(400,0,j,verticalalignment='center', horizontalalignment='center',size=50,color="blue")
-    if(j>=imageObject.n_frames-7):
+    if(j>=imageObject.n_frames-11):
         j=0
     else:
         j=j+3
     imageObject.seek(j)
-
+def axdefiner(label):
+    if(label=="MIXED"or False):
+        ax2.set_title(plotSelector.value_selected)
+        ax1.set_visible(False)
+        ax2.set_visible(True)
+        ax3.set_visible(True)
+    else:
+        ax1.set_title(plotSelector.value_selected)
+        ax1.set_visible(True)
+        ax2.set_visible(False)
+        ax3.set_visible(False)
+plotSelector.on_clicked(axdefiner)
 txt = ecgax.text(0.4,0.1,"XX",size=50,color="blue")
-ani = FuncAnimation(fig,update,interval=16)
+ani = FuncAnimation(fig,update,interval=10)
 plt.show()

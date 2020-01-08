@@ -8,7 +8,7 @@ from matplotlib.animation import FuncAnimation
 
 def animate(i):
     a= time.time()
-    data = pd.read_csv('Filtereddata.csv')
+    data = pd.read_csv('Rawdata.csv')
     temp=len(data['t'])
     y1 = data['f'][temp-600:temp-1]
     x = data['t'][temp-600:temp-1]
