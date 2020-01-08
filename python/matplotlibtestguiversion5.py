@@ -43,6 +43,8 @@ mat = scipy.io.loadmat('../datas/31.10.2019.mat') #loading matlab file
 
 t=mat['t9'][0] #What are the purpose of them?
 f=-mat['f9'][0]
+t=t.tolist()
+f=f.tolist()
 flag=False
 fig = plt.figure(figsize=(8,4.5),facecolor=(0.129,0.129,0.129))
 ax3=fig.add_subplot(212)
@@ -131,109 +133,119 @@ def load(label):
 loadbutton.on_clicked(load)
 plotSelector.on_clicked(axdefiner)
 plusbutton.on_clicked(start_stop)
-i=1.0
 
+for a in range(500):
+    t.pop(0)
+    f.pop(0)
 while 1:
+    for a in range(5):
+        t.append((t[1]-t[0])+t[len(t)-1])
+        t.pop(0)
+        f.append(f[0])
+        f.pop(0)
     aaa=time.time()
-    i=i+7
-    load_t=np.linspace(0+i/100,10+i/100,100)
-    print(0+i/10)
-    load_f=np.sin(2*3.14*np.linspace(0+i/100,10+i/100,100))
-    
-    if flag:
-        while ser.in_waiting>0:
-            
-            try:
-                taken = str(ser.readline().decode().strip('\r\n'))
-                val=taken.split(" ")
-                f.append(float(val[0]))
-                t.append(int(val[1])/1000)
-                instant_f.append(float(val[0]))
-                instant_t.append(int(val[1])/1000)
-            
-                if(len(instant_f)>2001):
-                    instant_f.pop(0)
-                    instant_t.pop(0)
-            except:
-                pass
-    else:
-        instant_f=f
-        instant_t=t
-
-    
-    if(plotSelector.value_selected=="Raw ECG"):
-        try:
-            if(len(instant_f)==len(instant_t)):
-                ax1.cla()
+    Fs = 1/np.mean(np.diff(instant_t))
+    for i in range(50):
+        if (i == 2):
                 
-                ax1.plot(instant_t,instant_f,"g")
+            if flag:
+                while ser.in_waiting>0:
+                    
+                    try:
+                        taken = str(ser.readline().decode().strip('\r\n'))
+                        val=taken.split(" ")
+                        f.append(float(val[0]))
+                        t.append(int(val[1])/1000)
+                        instant_f.append(float(val[0]))
+                        instant_t.append(int(val[1])/1000)
+                    
+                        if(len(instant_f)>2001):
+                            instant_f.pop(0)
+                            instant_t.pop(0)
+                    except:
+                        pass
             else:
-                pass
-            peaks, _ = find_peaks(instant_f, distance=int((60/110)*Fs),height=90)
-            try:
-               pass
-                
-            except:
-                pass
-            
-            line11.set_data(np.asarray(instant_t)[peaks],np.asarray(instant_f)[peaks])
-            ax1.set_xlim(right=instant_t[len(instant_t)-1]+2,left=instant_t[len(instant_t)-1]-7)
-            ax1.set_ylim(bottom=np.mean(instant_f)-150,top=np.mean(instant_f)+150)
-        except:
-            pass
-        pass
-    elif(plotSelector.value_selected=="Filtered Ecg"):
-        if(typeSelector.value_selected=="butter"):
-            filtered_f=e.butter_bandpass_filter(instant_f,slider1.val,slider2.val,Fs,np.round(slider3.val,0))
-        else:
-            filtered_f=instant_f
-        line1.set_data(instant_t,filtered_f)
-        peaks, _ = find_peaks(instant_f, distance=int((60/110)*Fs),height=90)
-        try:
-            bpm=60/np.mean(np.diff(np.asarray(instant_t)[peaks[np.arange(0,len(peaks))]]))
-            txt = ecgax.text(400,0,int(bpm),verticalalignment='center', horizontalalignment='center',size=50,color="blue")
-        except:
-            pass
-        line11.set_data(np.asarray(instant_t)[peaks],np.asarray(filtered_f)[peaks])        
-        ax1.set_xlim(right=instant_t[len(instant_t)-1]+2,left=instant_t[len(instant_t)-1]-4)
-        ax1.set_ylim(bottom=np.mean(filtered_f)-50,top=np.mean(filtered_f)+50)
-        pass
-    elif(plotSelector.value_selected=="FFT of Filtered"):
-        if(len(instant_f)==len(instant_t)):
-            a,b = e.myfft(instant_t,instant_f)
-            line1.set_data(a,b)
-            line11.set_data([],[])
-            ax1.set_xlim(right=50,left=-5)
-            ax1.set_ylim(bottom=-10,top=150)
-        else:
-            pass
-        pass
-    else:
-        if(typeSelector.value_selected=="butter"):
-            filtered_f=e.butter_bandpass_filter(instant_f,slider1.val,slider2.val,Fs,np.round(slider3.val,0))
-        else:
-            filtered_f=instant_f
-        line2.set_data(instant_t,filtered_f)
-        peaks, _ = find_peaks(instant_f, distance=int((60/110)*Fs),height=90)
-        try:
-            bpm=60/np.mean(np.diff(np.asarray(instant_t)[peaks[np.arange(0,len(peaks))]]))
-            txt = ecgax.text(400,0,int(bpm),verticalalignment='center', horizontalalignment='center',size=50,color="blue")
-        except:
-            pass
-        line22.set_data(np.asarray(instant_t)[peaks],np.asarray(filtered_f)[peaks])        
-        ax2.set_xlim(right=instant_t[len(instant_t)-1]+2,left=instant_t[len(instant_t)-1]-7)
-        ax2.set_ylim(bottom=np.mean(filtered_f)-150,top=np.mean(filtered_f)+150)
-        if(len(instant_f)==len(instant_t)):
-            a,b = e.myfft(instant_t,instant_f)
-            line3.set_data(a,b)
-            ax3.set_xlim(right=70,left=-5)
-            ax3.set_ylim(bottom=-5,top=100)
-        else:
-            pass
-        pass
+                instant_f=f
+                instant_t=t
 
-    sleep(0.07)
-    ax1.set_title(np.round(time.time()-aaa,3))
-    
-    plt.pause(0.01)
+            
+            if(plotSelector.value_selected=="Raw ECG"):
+                try:
+                    if(len(instant_f)==len(instant_t)):
+                        ax1.cla()
+                        
+                        ax1.plot(instant_t,instant_f,"g")
+                    else:
+                        pass
+                    peaks, _ = find_peaks(instant_f, distance=int((60/110)*Fs),height=90)
+                    try:
+                       pass
+                        
+                    except:
+                        pass
+                    
+                    line11.set_data(np.asarray(instant_t)[peaks],np.asarray(instant_f)[peaks])
+                    ax1.set_xlim(right=instant_t[len(instant_t)-1]+2,left=instant_t[len(instant_t)-1]-7)
+                    ax1.set_ylim(bottom=np.mean(instant_f)-150,top=np.mean(instant_f)+150)
+                except:
+                    pass
+                pass
+            elif(plotSelector.value_selected=="Filtered Ecg"):
+                if(typeSelector.value_selected=="butter"):
+                    filtered_f=e.butter_bandpass_filter(instant_f,slider1.val,slider2.val,Fs,np.round(slider3.val,0))
+                    filtered_f=filtered_f.tolist()
+                else:
+                    filtered_f=instant_f
+                print(type(filtered_f))
+                ax1.cla()
+                        
+                ax1.plot(instant_t,instant_f,"g")
+                peaks, _ = find_peaks(instant_f, distance=int((60/110)*Fs),height=90)
+                try:
+                    bpm=60/np.mean(np.diff(np.asarray(instant_t)[peaks[np.arange(0,len(peaks))]]))
+                    txt = ecgax.text(400,0,int(bpm),verticalalignment='center', horizontalalignment='center',size=50,color="blue")
+                except:
+                    pass
+                #line11.set_data(np.asarray(instant_t)[peaks],np.asarray(filtered_f)[peaks])        
+                ax1.set_xlim(right=instant_t[len(instant_t)-1]+2,left=instant_t[len(instant_t)-1]-4)
+                ax1.set_ylim(bottom=np.mean(filtered_f)-50,top=np.mean(filtered_f)+50)
+                pass
+            elif(plotSelector.value_selected=="FFT of Filtered"):
+                if(len(instant_f)==len(instant_t)):
+                    a,b = e.myfft(instant_t,instant_f)
+                    line1.set_data(a,b)
+                    line11.set_data([],[])
+                    ax1.set_xlim(right=50,left=-5)
+                    ax1.set_ylim(bottom=-10,top=150)
+                else:
+                    pass
+                pass
+            else:
+                if(typeSelector.value_selected=="butter"):
+                    filtered_f=e.butter_bandpass_filter(instant_f,slider1.val,slider2.val,Fs,np.round(slider3.val,0))
+                else:
+                    filtered_f=instant_f
+                line2.set_data(instant_t,filtered_f)
+                peaks, _ = find_peaks(instant_f, distance=int((60/110)*Fs),height=90)
+                try:
+                    bpm=60/np.mean(np.diff(np.asarray(instant_t)[peaks[np.arange(0,len(peaks))]]))
+                    txt = ecgax.text(400,0,int(bpm),verticalalignment='center', horizontalalignment='center',size=50,color="blue")
+                except:
+                    pass
+                line22.set_data(np.asarray(instant_t)[peaks],np.asarray(filtered_f)[peaks])        
+                ax2.set_xlim(right=instant_t[len(instant_t)-1]+2,left=instant_t[len(instant_t)-1]-7)
+                ax2.set_ylim(bottom=np.mean(filtered_f)-150,top=np.mean(filtered_f)+150)
+                if(len(instant_f)==len(instant_t)):
+                    a,b = e.myfft(instant_t,instant_f)
+                    line3.set_data(a,b)
+                    ax3.set_xlim(right=70,left=-5)
+                    ax3.set_ylim(bottom=-5,top=100)
+                else:
+                    pass
+                pass
+
+            sleep(0.07)
+            ax1.set_title(np.round(time.time()-aaa,3))
+            
+            plt.pause(0.01)
 

@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
 from PIL import GifImagePlugin
+import scipy.io
 from matplotlib.animation import FuncAnimation
 from matplotlib.widgets import Button,Cursor,RadioButtons,Slider
 from matplotlib.text import Text
@@ -23,11 +24,11 @@ for x in ports:
     
     if(str(x)==selected_portname):
         selected_port=x.device
-ser=serial.Serial(selected_port,115200)
+#ser=serial.Serial(selected_port,115200)
 print(selected_port)
 filetypes = [ ["*.csv", "*.Csv", "CSV files"] ,["All files","*"] ]
-ser.reset_input_buffer()
-ser.readline()
+#ser.reset_input_buffer()
+#ser.readline()
 sleep(1)
 imageObject = Image.open("./test.gif")
 imageObject.seek(0)
@@ -36,7 +37,16 @@ instant_t=[1]
 instant_f=[1]
 f=[1]
 t=[1]
-flag=True
+mat = scipy.io.loadmat('../datas/31.10.2019.mat') #loading matlab file
+
+t=mat['t9'][0] #What are the purpose of them?
+f=-mat['f9'][0]
+t=t.tolist()
+f=f.tolist()
+for a in range(300):
+    t.pop(0)
+    f.pop(0)
+flag=False
 fig = plt.figure(figsize=(8,4.5),facecolor=(0.129,0.129,0.129))
 ax3=fig.add_subplot(212)
 line3, =ax3.plot([0],[0])
@@ -92,7 +102,12 @@ def update(i):
     ecgax.imshow(imageObject)
     #ecgax.title("tetst")
     ecgax.axis("off")
-    
+    for a in range(5):
+        t.append((t[1]-t[0])+t[len(t)-1])
+        t.pop(0)
+        f.append(f[0])
+        f.pop(0)
+   
     if(j>=imageObject.n_frames-11):
         j=0
     else:
@@ -116,8 +131,8 @@ def update(i):
             except:
                 pass
     else:
-        instant_f=load_f
-        instant_t=load_t
+        instant_f=f
+        instant_t=t
 
     Fs = 1/np.mean(np.diff(instant_t))
     print(i)
@@ -148,6 +163,10 @@ def update(i):
     elif(plotSelector.value_selected=="Filtered Ecg"):
         if(typeSelector.value_selected=="butter"):
             filtered_f=e.butter_bandpass_filter(instant_f,slider1.val,slider2.val,Fs,np.round(slider3.val,0))
+        elif(typeSelector.value_selected=="cheby"):
+            filtered_f=e.cheby_bandpass_filter(instant_f,slider1.val,slider2.val,Fs,np.round(slider3.val,0))
+        elif(typeSelector.value_selected=="ellip"):
+            filtered_f=e.ellip_bandpass_filter(instant_f,slider1.val,slider2.val,Fs,np.round(slider3.val,0))
         else:
             filtered_f=instant_f
         line1.set_data(instant_t,filtered_f)
@@ -159,7 +178,7 @@ def update(i):
             pass
         line11.set_data(np.asarray(instant_t)[peaks],np.asarray(filtered_f)[peaks])        
         ax1.set_xlim(right=instant_t[len(instant_t)-1]+2,left=instant_t[len(instant_t)-1]-4)
-        ax1.set_ylim(bottom=np.mean(filtered_f)-50,top=np.mean(filtered_f)+50)
+        ax1.set_ylim(bottom=np.mean(filtered_f)-110,top=np.mean(filtered_f)+200)
         pass
     elif(plotSelector.value_selected=="FFT of Filtered"):
         if(len(instant_f)==len(instant_t)):
