@@ -4,6 +4,7 @@ from PIL import Image
 import time
 from PIL import GifImagePlugin
 #from matplotlib.animation import FuncAnimation
+import scipy.io
 from matplotlib.widgets import Button,Cursor,RadioButtons,Slider
 from matplotlib.text import Text
 import pandas as pd
@@ -15,8 +16,8 @@ from serial.tools import list_ports
 import easygui
 from drawnow import drawnow
 ports=[];
-load_f=[1,34,2]
-load_t=[1,1,35]
+load_t=np.linspace(0,10,1000)
+load_f=np.sin(2*3.14*np.linspace(0,10,1000))
 selected_port="";
 for x in list_ports.comports():
     ports.append(x)
@@ -38,6 +39,10 @@ instant_t=[1,34,2]
 instant_f=[1,1,35]
 f=[1]
 t=[1]
+mat = scipy.io.loadmat('../datas/31.10.2019.mat') #loading matlab file
+
+t=mat['t9'][0] #What are the purpose of them?
+f=-mat['f9'][0]
 flag=False
 fig = plt.figure(figsize=(8,4.5),facecolor=(0.129,0.129,0.129))
 ax3=fig.add_subplot(212)
@@ -126,12 +131,18 @@ def load(label):
 loadbutton.on_clicked(load)
 plotSelector.on_clicked(axdefiner)
 plusbutton.on_clicked(start_stop)
+i=1.0
 
 while 1:
     aaa=time.time()
+    i=i+7
+    load_t=np.linspace(0+i/100,10+i/100,100)
+    print(0+i/10)
+    load_f=np.sin(2*3.14*np.linspace(0+i/100,10+i/100,100))
+    
     if flag:
         while ser.in_waiting>0:
-            i=i+1
+            
             try:
                 taken = str(ser.readline().decode().strip('\r\n'))
                 val=taken.split(" ")
@@ -146,8 +157,8 @@ while 1:
             except:
                 pass
     else:
-        instant_f=load_f
-        instant_t=load_t
+        instant_f=f
+        instant_t=t
 
     
     if(plotSelector.value_selected=="Raw ECG"):
@@ -156,7 +167,6 @@ while 1:
                 ax1.cla()
                 
                 ax1.plot(instant_t,instant_f,"g")
-                print(1)
             else:
                 pass
             peaks, _ = find_peaks(instant_f, distance=int((60/110)*Fs),height=90)
@@ -221,6 +231,9 @@ while 1:
         else:
             pass
         pass
+
+    sleep(0.07)
     ax1.set_title(np.round(time.time()-aaa,3))
-    plt.pause(0.00001)
-plt.show()
+    
+    plt.pause(0.01)
+

@@ -1,2 +1,2 @@
-python matplotlibtestguiversion5.py
+python main_function.py
 pause
