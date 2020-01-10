@@ -1,7 +1,7 @@
 from __future__ import division
 import numpy as np
 #import talib as ta  
-from scipy.signal import butter, lfilter,cheby2,ellip
+from scipy.signal import butter, lfilter,cheby2,ellip,filtfilt
 # this page is used for butterworth filter design 
 # https://scipy-cookbook.readthedocs.io/items/ButterworthBandpass.html
 def cheby_bandpass(lowcut, highcut, fs, order=5):
@@ -12,10 +12,13 @@ def cheby_bandpass(lowcut, highcut, fs, order=5):
     return b, a
 
 
-def cheby_bandpass_filter(data, lowcut, highcut, fs, order=5):
+def cheby_bandpass_filter(data, lowcut, highcut, fs, order=5,flag=False):
     b, a = ellip_bandpass(lowcut, highcut, fs, order=order)
-    y = lfilter(b, a, data)
-    return y
+    if flag:
+        y = lfilter(b, a, data)
+    else:
+        y = filtfilt(b,a,data)
+    return y 
 def ellip_bandpass(lowcut, highcut, fs, order=5):
     nyq = 0.5 * fs
     low = lowcut / nyq
@@ -24,10 +27,13 @@ def ellip_bandpass(lowcut, highcut, fs, order=5):
     return b, a
 
 
-def ellip_bandpass_filter(data, lowcut, highcut, fs, order=5):
+def ellip_bandpass_filter(data, lowcut, highcut, fs, order=5,flag=False):
     b, a = ellip_bandpass(lowcut, highcut, fs, order=order)
-    y = lfilter(b, a, data)
-    return y
+    if flag:
+        y = lfilter(b, a, data)
+    else:
+        y = filtfilt(b,a,data)
+    return y 
 def butter_bandpass(lowcut, highcut, fs, order=5):
     nyq = 0.5 * fs
     low = lowcut / nyq
@@ -36,9 +42,12 @@ def butter_bandpass(lowcut, highcut, fs, order=5):
     return b, a
 
 
-def butter_bandpass_filter(data, lowcut, highcut, fs, order=5):
+def butter_bandpass_filter(data, lowcut, highcut, fs, order=5,flag=False):
     b, a = butter_bandpass(lowcut, highcut, fs, order=order)
-    y = lfilter(b, a, data)
+    if flag:
+        y = lfilter(b, a, data)
+    else:
+        y = filtfilt(b,a,data)
     return y    
 def itself(tin,fin):
     temp1=len(tin)
