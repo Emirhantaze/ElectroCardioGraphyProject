@@ -180,7 +180,7 @@ def update(i):
             peaks, _ = find_peaks(filtered_f, distance=int((60/180)*Fs),height=90)
             try:
                 temp=len(instant_t)
-                bpm=60/np.mean(np.diff(np.asarray(instant_t)[peaks[6:(len(instant_t)-2)]]))
+                bpm=60/np.mean(np.diff(np.asarray(instant_t)[peaks[temp-6:temp-2]]))
                 txt = ecgax.text(400,0,int(bpm),verticalalignment='center', horizontalalignment='center',size=50,color="blue")
             except:
                 pass
