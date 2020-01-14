@@ -41,6 +41,7 @@ t=[1]
 
 
 flag=True
+flag1=False
 fig = plt.figure(figsize=(8,4.5),facecolor=(0.129,0.129,0.129))
 ax3=fig.add_subplot(212)
 line3, =ax3.plot([0],[0])
@@ -142,6 +143,8 @@ def update(i):
     else:
         instant_f=load_f
         instant_t=load_t
+        t=[]
+        f=[]
     #instant_f=(np.asarray(instant_f)-np.mean(instant_f)).tolist()
     if(len(instant_f)>1200):
         Fs = 1/np.mean(np.diff(instant_t))
@@ -159,7 +162,8 @@ def update(i):
                     pass
                 peaks, _ = find_peaks(instant_f, distance=int((60/180)*Fs),height=90)
                 try:
-                    bpm=60/np.mean(np.diff(np.asarray(instant_t)[peaks[6:(len(instant_t)-2)]]))
+                    temp=len(peaks)
+                    bpm=60/np.mean(np.diff(np.asarray(instant_t)[peaks[temp-12:temp-2]]))
                     txt = ecgax.text(400,0,int(bpm),verticalalignment='center', horizontalalignment='center',size=50,color="blue")
                 except:
                     pass
@@ -179,8 +183,8 @@ def update(i):
             line1.set_data(instant_t,filtered_f)
             peaks, _ = find_peaks(filtered_f, distance=int((60/180)*Fs),height=90)
             try:
-                temp=len(instant_t)
-                bpm=60/np.mean(np.diff(np.asarray(instant_t)[peaks[temp-6:temp-2]]))
+                temp=len(peaks)
+                bpm=60/np.mean(np.diff(np.asarray(instant_t)[peaks[temp-12:temp-2]]))
                 txt = ecgax.text(400,0,int(bpm),verticalalignment='center', horizontalalignment='center',size=50,color="blue")
             except:
                 pass
@@ -247,6 +251,8 @@ def start_stop(label):
         ser.close()
         ata=time.time()
         while(time.time()-ata<0.1):
+            pass
+        if(flag1):
             pass
     else:
         ser.open()
